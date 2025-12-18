@@ -69,19 +69,40 @@ def load_core_data():
         if 'movieId' in movies_cb.columns:
             movies_cb.set_index('movieId', inplace=True, drop=False)
         
-    except FileNotFoundError as e:
+    except (FileNotFoundError, OSError, IOError) as e:
         st.error(
-            "One or more exported data files are missing. "
-            "Please run the export cell in the notebook first "
-            "(see `NOTEBOOK_EXPORT_INSTRUCTIONS.md`)."
+            f"Error loading data files: {str(e)}\n\n"
+            "One or more exported data files are missing or cannot be read. "
+            "Please ensure all required files are present in the `streamlit/data/` directory."
         )
-        st.stop()
+        # Return empty dataframes instead of stopping to allow app to start
+        return {
+            "movies": pd.DataFrame(),
+            "ratings": pd.DataFrame(),
+            "movie_stats": pd.DataFrame(),
+            "weighted_pop": pd.DataFrame(),
+            "movies_cb": pd.DataFrame(),
+            "summary": None,
+        }
+    except Exception as e:
+        st.error(f"Unexpected error loading data: {str(e)}")
+        return {
+            "movies": pd.DataFrame(),
+            "ratings": pd.DataFrame(),
+            "movie_stats": pd.DataFrame(),
+            "weighted_pop": pd.DataFrame(),
+            "movies_cb": pd.DataFrame(),
+            "summary": None,
+        }
 
     # Optional analytics
     summary_stats = None
-    if (DATA_DIR / "summary_stats.json").exists():
-        with open(DATA_DIR / "summary_stats.json", "r") as f:
-            summary_stats = json.load(f)
+    try:
+        if (DATA_DIR / "summary_stats.json").exists():
+            with open(DATA_DIR / "summary_stats.json", "r") as f:
+                summary_stats = json.load(f)
+    except Exception:
+        summary_stats = None
 
     return {
         "movies": movies,
@@ -343,10 +364,24 @@ page = st.sidebar.selectbox(
     ["Home", "Get Recommendations", "Find Similar Movies", "Business Insights Dashboard"],
 )
 
+# Load data with error handling - wrapped in try-except to prevent crashes
+try:
+    data = load_core_data()
+except Exception as e:
+    st.error(f"Failed to load core data: {str(e)}")
+    st.stop()
 
-data = load_core_data()
-analytics = load_analytics()
-models = load_models()
+try:
+    analytics = load_analytics()
+except Exception as e:
+    st.warning(f"Some analytics data could not be loaded: {str(e)}")
+    analytics = {}
+
+try:
+    models = load_models()
+except Exception as e:
+    st.warning(f"Some models could not be loaded: {str(e)}")
+    models = {}
 
 
 # -----------------------------------------------------------------------------
@@ -367,15 +402,23 @@ if page == "Home":
     # Dataset statistics
     movies = data["movies"]
     ratings = data["ratings"]
+    
+    # Check if data is loaded
+    if movies.empty or ratings.empty:
+        st.error("⚠️ Data files could not be loaded. Please check that all required data files are present in the `streamlit/data/` directory.")
+        st.stop()
+    
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.metric("Total Movies", f"{len(movies):,}")
     with col2:
         st.metric("Total Ratings", f"{len(ratings):,}")
     with col3:
-        st.metric("Unique Users", f"{ratings['userId'].nunique():,}")
+        unique_users = ratings['userId'].nunique() if not ratings.empty and 'userId' in ratings.columns else 0
+        st.metric("Unique Users", f"{unique_users:,}")
     with col4:
-        st.metric("Avg Rating", f"{ratings['rating'].mean():.2f}")
+        avg_rating = ratings['rating'].mean() if not ratings.empty and 'rating' in ratings.columns else 0.0
+        st.metric("Avg Rating", f"{avg_rating:.2f}")
 
     st.subheader("Trending Now (Weighted Popularity)")
     top_trending = data["weighted_pop"].head(20)
@@ -403,11 +446,24 @@ elif page == "Get Recommendations":
 
     ratings = data["ratings"]
     movies = data["movies"]
+    
+    # Check if data is loaded
+    if ratings.empty or movies.empty:
+        st.error("⚠️ Data files could not be loaded. Please check that all required data files are present.")
+        st.stop()
 
     # User selection (limited for performance, but sorted)
     # Cache unique users list to avoid recomputation
-    if 'unique_users' not in st.session_state:
-        st.session_state.unique_users = sorted(ratings["userId"].unique())
+    if 'unique_users' not in st.session_state or ratings.empty:
+        if not ratings.empty and 'userId' in ratings.columns:
+            st.session_state.unique_users = sorted(ratings["userId"].unique())
+        else:
+            st.session_state.unique_users = []
+    
+    if not st.session_state.unique_users:
+        st.error("No user data available.")
+        st.stop()
+    
     selected_user = st.selectbox("Select a User ID", st.session_state.unique_users)
 
     # Show movies this user has rated
@@ -469,9 +525,22 @@ elif page == "Find Similar Movies":
 
     movies = data["movies"]
     
+    # Check if data is loaded
+    if movies.empty:
+        st.error("⚠️ Data files could not be loaded. Please check that all required data files are present.")
+        st.stop()
+    
     # Cache movie titles list for faster access
     if 'movie_titles' not in st.session_state:
-        st.session_state.movie_titles = movies["title"].tolist()
+        if not movies.empty and 'title' in movies.columns:
+            st.session_state.movie_titles = movies["title"].tolist()
+        else:
+            st.session_state.movie_titles = []
+    
+    if not st.session_state.movie_titles:
+        st.error("No movie data available.")
+        st.stop()
+    
     selected_title = st.selectbox("Search for a movie", st.session_state.movie_titles)
 
     if st.button("Find Similar Movies"):
@@ -529,6 +598,11 @@ elif page == "Business Insights Dashboard":
 
     movies = data["movies"]
     ratings = data["ratings"]
+    
+    # Check if data is loaded
+    if movies.empty or ratings.empty:
+        st.error("⚠️ Data files could not be loaded. Please check that all required data files are present.")
+        st.stop()
 
     # Key metrics
     st.subheader("Key Metrics")
