@@ -1,0 +1,116 @@
+[
+  {
+    "genre": "Film-Noir",
+    "avg_rating": 3.9159624576568604,
+    "num_ratings": 318917,
+    "num_movies": 350
+  },
+  {
+    "genre": "War",
+    "avg_rating": 3.7975802421569824,
+    "num_ratings": 1697649,
+    "num_movies": 2199
+  },
+  {
+    "genre": "Crime",
+    "avg_rating": 3.6972005367279053,
+    "num_ratings": 5688582,
+    "num_movies": 6652
+  },
+  {
+    "genre": "Documentary",
+    "avg_rating": 3.6926002502441406,
+    "num_ratings": 441100,
+    "num_movies": 8961
+  },
+  {
+    "genre": "Drama",
+    "avg_rating": 3.6858389377593994,
+    "num_ratings": 14787040,
+    "num_movies": 32611
+  },
+  {
+    "genre": "Mystery",
+    "avg_rating": 3.674032688140869,
+    "num_ratings": 2748373,
+    "num_movies": 3852
+  },
+  {
+    "genre": "Animation",
+    "avg_rating": 3.615561008453369,
+    "num_ratings": 2329566,
+    "num_movies": 4544
+  },
+  {
+    "genre": "IMAX",
+    "avg_rating": 3.6068663597106934,
+    "num_ratings": 1560106,
+    "num_movies": 195
+  },
+  {
+    "genre": "Western",
+    "avg_rating": 3.5956528186798096,
+    "num_ratings": 632052,
+    "num_movies": 1481
+  },
+  {
+    "genre": "Musical",
+    "avg_rating": 3.5480918884277344,
+    "num_ratings": 1239223,
+    "num_movies": 1031
+  },
+  {
+    "genre": "Romance",
+    "avg_rating": 3.5473341941833496,
+    "num_ratings": 5874531,
+    "num_movies": 9838
+  },
+  {
+    "genre": "Thriller",
+    "avg_rating": 3.5340747833251953,
+    "num_ratings": 9168628,
+    "num_movies": 11413
+  },
+  {
+    "genre": "Adventure",
+    "avg_rating": 3.5260069370269775,
+    "num_ratings": 8048929,
+    "num_movies": 5100
+  },
+  {
+    "genre": "Fantasy",
+    "avg_rating": 3.5143492221832275,
+    "num_ratings": 3899930,
+    "num_movies": 3750
+  },
+  {
+    "genre": "Sci-Fi",
+    "avg_rating": 3.4943721294403076,
+    "num_ratings": 6032230,
+    "num_movies": 4737
+  },
+  {
+    "genre": "Action",
+    "avg_rating": 3.479978322982788,
+    "num_ratings": 10222144,
+    "num_movies": 9195
+  },
+  {
+    "genre": "Children",
+    "avg_rating": 3.437727928161621,
+    "num_ratings": 2897960,
+    "num_movies": 4292
+  },
+  {
+    "genre": "Comedy",
+    "avg_rating": 3.4322316646575928,
+    "num_ratings": 11860141,
+    "num_movies": 22132
+  },
+  {
+    "genre": "Horror",
+    "avg_rating": 3.3070054054260254,
+    "num_ratings": 2610188,
+    "num_movies": 8376
+  }
+]

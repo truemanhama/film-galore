@@ -1,0 +1,102 @@
+[
+  {
+    "tag": "sci-fi",
+    "avg_rating": 3.990825653076172,
+    "num_uses": 13407
+  },
+  {
+    "tag": "atmospheric",
+    "avg_rating": 4.241116523742676,
+    "num_uses": 11820
+  },
+  {
+    "tag": "action",
+    "avg_rating": 3.8804662227630615,
+    "num_uses": 9993
+  },
+  {
+    "tag": "comedy",
+    "avg_rating": 3.9369585514068604,
+    "num_uses": 9351
+  },
+  {
+    "tag": "surreal",
+    "avg_rating": 4.221963882446289,
+    "num_uses": 8819
+  },
+  {
+    "tag": "funny",
+    "avg_rating": 4.08831262588501,
+    "num_uses": 8770
+  },
+  {
+    "tag": "visually appealing",
+    "avg_rating": 4.1740336418151855,
+    "num_uses": 8642
+  },
+  {
+    "tag": "twist ending",
+    "avg_rating": 4.251519680023193,
+    "num_uses": 8061
+  },
+  {
+    "tag": "thought-provoking",
+    "avg_rating": 4.393652439117432,
+    "num_uses": 7499
+  },
+  {
+    "tag": "dark comedy",
+    "avg_rating": 4.212287902832031,
+    "num_uses": 7186
+  },
+  {
+    "tag": "dystopia",
+    "avg_rating": 3.940777540206909,
+    "num_uses": 6636
+  },
+  {
+    "tag": "based on a book",
+    "avg_rating": 3.868764638900757,
+    "num_uses": 6435
+  },
+  {
+    "tag": "cinematography",
+    "avg_rating": 4.219086647033691,
+    "num_uses": 6308
+  },
+  {
+    "tag": "social commentary",
+    "avg_rating": 4.175642490386963,
+    "num_uses": 6146
+  },
+  {
+    "tag": "stylized",
+    "avg_rating": 4.163576602935791,
+    "num_uses": 5933
+  },
+  {
+    "tag": "psychology",
+    "avg_rating": 4.298411846160889,
+    "num_uses": 5856
+  },
+  {
+    "tag": "romance",
+    "avg_rating": 3.9220128059387207,
+    "num_uses": 5783
+  },
+  {
+    "tag": "fantasy",
+    "avg_rating": 3.9845070838928223,
+    "num_uses": 5680
+  },
+  {
+    "tag": "quirky",
+    "avg_rating": 4.182693958282471,
+    "num_uses": 5605
+  },
+  {
+    "tag": "dark",
+    "avg_rating": 4.155614376068115,
+    "num_uses": 5459
+  }
+]

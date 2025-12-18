@@ -1,0 +1,352 @@
+[
+  {
+    "movieId": 26416,
+    "title": "Best Boy (1979)",
+    "genres": "Documentary",
+    "avg_rating": 4.0,
+    "num_ratings": 14
+  },
+  {
+    "movieId": 26826,
+    "title": "Latcho Drom (1993)",
+    "genres": "Documentary|Musical",
+    "avg_rating": 4.0,
+    "num_ratings": 24
+  },
+  {
+    "movieId": 30854,
+    "title": "River, The (He liu) (1997)",
+    "genres": "Drama",
+    "avg_rating": 4.0757575035095215,
+    "num_ratings": 33
+  },
+  {
+    "movieId": 31954,
+    "title": "Beautiful City (Shah-re ziba) (2004)",
+    "genres": "Drama",
+    "avg_rating": 4.030303001403809,
+    "num_ratings": 33
+  },
+  {
+    "movieId": 48647,
+    "title": "Last Bolshevik, The (Tombeau d'Alexandre, Le) (1993)",
+    "genres": "Documentary",
+    "avg_rating": 4.181818008422852,
+    "num_ratings": 11
+  },
+  {
+    "movieId": 53226,
+    "title": "Great War, The (Grande guerra, La) (1959)",
+    "genres": "Action|Adventure|Comedy|Drama|War",
+    "avg_rating": 4.089743614196777,
+    "num_ratings": 39
+  },
+  {
+    "movieId": 64418,
+    "title": "Man Named Pearl, A (2006)",
+    "genres": "Documentary",
+    "avg_rating": 4.099999904632568,
+    "num_ratings": 20
+  },
+  {
+    "movieId": 70722,
+    "title": "Good Men, Good Women (1995)",
+    "genres": "Drama|Romance",
+    "avg_rating": 4.166666507720947,
+    "num_ratings": 12
+  },
+  {
+    "movieId": 77181,
+    "title": "Ascent of Money, The (2008)",
+    "genres": "Documentary",
+    "avg_rating": 4.0,
+    "num_ratings": 16
+  },
+  {
+    "movieId": 80337,
+    "title": "Still Bill (2009)",
+    "genres": "Documentary",
+    "avg_rating": 4.047618865966797,
+    "num_ratings": 21
+  },
+  {
+    "movieId": 82003,
+    "title": "Rendez-vous d'Anna, Les (Meetings of Anna, The) (1978)",
+    "genres": "Drama",
+    "avg_rating": 4.037036895751953,
+    "num_ratings": 27
+  },
+  {
+    "movieId": 82836,
+    "title": "Life of Reilly, The (2006)",
+    "genres": "Comedy",
+    "avg_rating": 4.045454502105713,
+    "num_ratings": 11
+  },
+  {
+    "movieId": 84248,
+    "title": "Organizer, The (I compagni) (1963)",
+    "genres": "Crime|Drama",
+    "avg_rating": 4.034482955932617,
+    "num_ratings": 29
+  },
+  {
+    "movieId": 86288,
+    "title": "Day the Universe Changed, The (1985)",
+    "genres": "Documentary",
+    "avg_rating": 4.150000095367432,
+    "num_ratings": 10
+  },
+  {
+    "movieId": 89985,
+    "title": "Trap: What Happened to Our Dream of Freedom, The (2007)",
+    "genres": "Documentary",
+    "avg_rating": 4.094117641448975,
+    "num_ratings": 85
+  },
+  {
+    "movieId": 90592,
+    "title": "How to Die in Oregon (2011)",
+    "genres": "Documentary|Drama",
+    "avg_rating": 4.130136966705322,
+    "num_ratings": 73
+  },
+  {
+    "movieId": 91762,
+    "title": "Last Lions, The (2011)",
+    "genres": "Documentary",
+    "avg_rating": 4.009803771972656,
+    "num_ratings": 51
+  },
+  {
+    "movieId": 95425,
+    "title": "Map For Saturday, A (2007)",
+    "genres": "Documentary",
+    "avg_rating": 4.050000190734863,
+    "num_ratings": 10
+  },
+  {
+    "movieId": 95604,
+    "title": "The War (2007)",
+    "genres": "Documentary|War",
+    "avg_rating": 4.0117645263671875,
+    "num_ratings": 85
+  },
+  {
+    "movieId": 98002,
+    "title": "Madrid, 1987 (2011)",
+    "genres": "Drama",
+    "avg_rating": 4.153846263885498,
+    "num_ratings": 13
+  },
+  {
+    "movieId": 98241,
+    "title": "Starry starry night (Xing kong) (2011)",
+    "genres": "Children|Drama|Fantasy",
+    "avg_rating": 4.142857074737549,
+    "num_ratings": 14
+  },
+  {
+    "movieId": 98273,
+    "title": "Last Trapper, The (Le dernier trappeur) (2004)",
+    "genres": "Adventure|Documentary",
+    "avg_rating": 4.150000095367432,
+    "num_ratings": 10
+  },
+  {
+    "movieId": 98996,
+    "title": "Filming 'Othello' (1978)",
+    "genres": "Documentary",
+    "avg_rating": 4.150000095367432,
+    "num_ratings": 10
+  },
+  {
+    "movieId": 99089,
+    "title": "Poor Little Rich Girl (1936)",
+    "genres": "Adventure|Musical|Romance",
+    "avg_rating": 4.0,
+    "num_ratings": 11
+  },
+  {
+    "movieId": 102323,
+    "title": "Grin Without a Cat, A (Fond de l'air est rouge, Le) (1977)",
+    "genres": "Documentary",
+    "avg_rating": 4.038461685180664,
+    "num_ratings": 13
+  },
+  {
+    "movieId": 102672,
+    "title": "New York: A Documentary Film (1999)",
+    "genres": "Documentary",
+    "avg_rating": 4.5,
+    "num_ratings": 11
+  },
+  {
+    "movieId": 102742,
+    "title": "Tie Xi Qu: West of the Tracks (Tiexi qu) (2003)",
+    "genres": "Documentary",
+    "avg_rating": 4.166666507720947,
+    "num_ratings": 12
+  },
+  {
+    "movieId": 107061,
+    "title": "Urusei Yatsura Movie 2: Beautiful Dreamer (Urusei Yatsura 2: By\u00fbtifuru dor\u00eem\u00e2) (1984)",
+    "genres": "Animation|Comedy|Fantasy",
+    "avg_rating": 4.03125,
+    "num_ratings": 32
+  },
+  {
+    "movieId": 109441,
+    "title": "Satanas (2007)",
+    "genres": "Crime|Drama",
+    "avg_rating": 4.0,
+    "num_ratings": 10
+  },
+  {
+    "movieId": 115176,
+    "title": "Toute la m\u00e9moire du monde (1956)",
+    "genres": "Documentary",
+    "avg_rating": 4.045454502105713,
+    "num_ratings": 11
+  },
+  {
+    "movieId": 116845,
+    "title": "Valley Uprising (2014)",
+    "genres": "Documentary",
+    "avg_rating": 4.034246444702148,
+    "num_ratings": 73
+  },
+  {
+    "movieId": 116945,
+    "title": "Freedom (2009)",
+    "genres": "Drama",
+    "avg_rating": 4.0,
+    "num_ratings": 12
+  },
+  {
+    "movieId": 122282,
+    "title": "Pride and Prejudice (1980)",
+    "genres": "Comedy|Drama|Romance",
+    "avg_rating": 4.206896781921387,
+    "num_ratings": 58
+  },
+  {
+    "movieId": 126947,
+    "title": "Carriage to Vienna (1966)",
+    "genres": "Drama|War",
+    "avg_rating": 4.166666507720947,
+    "num_ratings": 15
+  },
+  {
+    "movieId": 126967,
+    "title": "Letter from Siberia (1957)",
+    "genres": "(no genres listed)",
+    "avg_rating": 4.205882549285889,
+    "num_ratings": 17
+  },
+  {
+    "movieId": 133333,
+    "title": "DamNation (2014)",
+    "genres": "Documentary",
+    "avg_rating": 4.0,
+    "num_ratings": 26
+  },
+  {
+    "movieId": 134244,
+    "title": "Streetwise (1984)",
+    "genres": "Documentary",
+    "avg_rating": 4.064102649688721,
+    "num_ratings": 39
+  },
+  {
+    "movieId": 135180,
+    "title": "K2: Siren of the Himalayas (2012)",
+    "genres": "Adventure|Documentary",
+    "avg_rating": 4.0,
+    "num_ratings": 11
+  },
+  {
+    "movieId": 135440,
+    "title": "Edif\u00edcio Master (2002)",
+    "genres": "Documentary",
+    "avg_rating": 4.175000190734863,
+    "num_ratings": 20
+  },
+  {
+    "movieId": 135492,
+    "title": "Kaaka Muttai (2015)",
+    "genres": "(no genres listed)",
+    "avg_rating": 4.184210300445557,
+    "num_ratings": 19
+  },
+  {
+    "movieId": 135541,
+    "title": "Noodle (2007)",
+    "genres": "Drama",
+    "avg_rating": 4.099999904632568,
+    "num_ratings": 10
+  },
+  {
+    "movieId": 138024,
+    "title": "Michael Jackson: Dangerous Tour (Bucharest, 1992) (1992)",
+    "genres": "(no genres listed)",
+    "avg_rating": 4.400000095367432,
+    "num_ratings": 10
+  },
+  {
+    "movieId": 138908,
+    "title": "The Pirates of Penzance (1980)",
+    "genres": "Adventure|Comedy",
+    "avg_rating": 4.09375,
+    "num_ratings": 16
+  },
+  {
+    "movieId": 139938,
+    "title": "Brancaleone alle crociate (1970)",
+    "genres": "Comedy",
+    "avg_rating": 4.0,
+    "num_ratings": 14
+  },
+  {
+    "movieId": 140299,
+    "title": "B-Movie: Lust & Sound in West-Berlin (2015)",
+    "genres": "Documentary|Musical",
+    "avg_rating": 4.0625,
+    "num_ratings": 24
+  },
+  {
+    "movieId": 140391,
+    "title": "Pistol: The Birth of a Legend (1991)",
+    "genres": "Children|Drama",
+    "avg_rating": 4.050000190734863,
+    "num_ratings": 10
+  },
+  {
+    "movieId": 140958,
+    "title": "Next Goal Wins (2014)",
+    "genres": "Documentary",
+    "avg_rating": 4.0789475440979,
+    "num_ratings": 19
+  },
+  {
+    "movieId": 141958,
+    "title": "A Little Thing Called Love (2010)",
+    "genres": "Comedy|Romance",
+    "avg_rating": 4.050000190734863,
+    "num_ratings": 10
+  },
+  {
+    "movieId": 142873,
+    "title": "O Costa d'\u00c1frica (1954)",
+    "genres": "Comedy",
+    "avg_rating": 4.0,
+    "num_ratings": 10
+  },
+  {
+    "movieId": 143335,
+    "title": "Deprisa, Deprisa (1981)",
+    "genres": "Crime|Drama",
+    "avg_rating": 4.099999904632568,
+    "num_ratings": 10
+  }
+]

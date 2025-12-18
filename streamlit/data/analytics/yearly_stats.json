@@ -1,0 +1,205 @@
+[
+  {
+    "year": 1995,
+    "avg_rating": 3.75,
+    "num_ratings": 4,
+    "unique_users": 2,
+    "unique_movies": 4
+  },
+  {
+    "year": 1996,
+    "avg_rating": 3.5543766021728516,
+    "num_ratings": 1732721,
+    "unique_users": 34448,
+    "unique_movies": 1387
+  },
+  {
+    "year": 1997,
+    "avg_rating": 3.5926353931427,
+    "num_ratings": 763613,
+    "unique_users": 16768,
+    "unique_movies": 1674
+  },
+  {
+    "year": 1998,
+    "avg_rating": 3.523470163345337,
+    "num_ratings": 329419,
+    "unique_users": 6880,
+    "unique_movies": 2302
+  },
+  {
+    "year": 1999,
+    "avg_rating": 3.617743730545044,
+    "num_ratings": 1230159,
+    "unique_users": 14222,
+    "unique_movies": 3048
+  },
+  {
+    "year": 2000,
+    "avg_rating": 3.578392267227173,
+    "num_ratings": 2031258,
+    "unique_users": 25354,
+    "unique_movies": 3924
+  },
+  {
+    "year": 2001,
+    "avg_rating": 3.536306858062744,
+    "num_ratings": 1237836,
+    "unique_users": 16422,
+    "unique_movies": 4838
+  },
+  {
+    "year": 2002,
+    "avg_rating": 3.485198736190796,
+    "num_ratings": 909011,
+    "unique_users": 11657,
+    "unique_movies": 5792
+  },
+  {
+    "year": 2003,
+    "avg_rating": 3.471799373626709,
+    "num_ratings": 1077389,
+    "unique_users": 11892,
+    "unique_movies": 6860
+  },
+  {
+    "year": 2004,
+    "avg_rating": 3.427290201187134,
+    "num_ratings": 1199108,
+    "unique_users": 10820,
+    "unique_movies": 8004
+  },
+  {
+    "year": 2005,
+    "avg_rating": 3.432121515274048,
+    "num_ratings": 1844381,
+    "unique_users": 15603,
+    "unique_movies": 8482
+  },
+  {
+    "year": 2006,
+    "avg_rating": 3.460367202758789,
+    "num_ratings": 1207180,
+    "unique_users": 12964,
+    "unique_movies": 8813
+  },
+  {
+    "year": 2007,
+    "avg_rating": 3.4642863273620605,
+    "num_ratings": 1091850,
+    "unique_users": 13024,
+    "unique_movies": 9349
+  },
+  {
+    "year": 2008,
+    "avg_rating": 3.5276055335998535,
+    "num_ratings": 1202202,
+    "unique_users": 15150,
+    "unique_movies": 10020
+  },
+  {
+    "year": 2009,
+    "avg_rating": 3.4901068210601807,
+    "num_ratings": 978867,
+    "unique_users": 15001,
+    "unique_movies": 11743
+  },
+  {
+    "year": 2010,
+    "avg_rating": 3.510275363922119,
+    "num_ratings": 967255,
+    "unique_users": 16354,
+    "unique_movies": 13331
+  },
+  {
+    "year": 2011,
+    "avg_rating": 3.536262273788452,
+    "num_ratings": 819971,
+    "unique_users": 15285,
+    "unique_movies": 14372
+  },
+  {
+    "year": 2012,
+    "avg_rating": 3.5869946479797363,
+    "num_ratings": 779951,
+    "unique_users": 14139,
+    "unique_movies": 14419
+  },
+  {
+    "year": 2013,
+    "avg_rating": 3.6273319721221924,
+    "num_ratings": 621443,
+    "unique_users": 11824,
+    "unique_movies": 14831
+  },
+  {
+    "year": 2014,
+    "avg_rating": 3.601572036743164,
+    "num_ratings": 566628,
+    "unique_users": 10328,
+    "unique_movies": 15637
+  },
+  {
+    "year": 2015,
+    "avg_rating": 3.57827091217041,
+    "num_ratings": 1853975,
+    "unique_users": 23166,
+    "unique_movies": 25715
+  },
+  {
+    "year": 2016,
+    "avg_rating": 3.548367500305176,
+    "num_ratings": 2005979,
+    "unique_users": 20945,
+    "unique_movies": 31532
+  },
+  {
+    "year": 2017,
+    "avg_rating": 3.5621814727783203,
+    "num_ratings": 1899523,
+    "unique_users": 19420,
+    "unique_movies": 34484
+  },
+  {
+    "year": 2018,
+    "avg_rating": 3.5828638076782227,
+    "num_ratings": 1455193,
+    "unique_users": 17451,
+    "unique_movies": 36545
+  },
+  {
+    "year": 2019,
+    "avg_rating": 3.593878984451294,
+    "num_ratings": 1450218,
+    "unique_users": 16562,
+    "unique_movies": 42888
+  },
+  {
+    "year": 2020,
+    "avg_rating": 3.6085078716278076,
+    "num_ratings": 1763532,
+    "unique_users": 19725,
+    "unique_movies": 42588
+  },
+  {
+    "year": 2021,
+    "avg_rating": 3.5968739986419678,
+    "num_ratings": 1297525,
+    "unique_users": 16191,
+    "unique_movies": 41618
+  },
+  {
+    "year": 2022,
+    "avg_rating": 3.517503023147583,
+    "num_ratings": 953347,
+    "unique_users": 12776,
+    "unique_movies": 39880
+  },
+  {
+    "year": 2023,
+    "avg_rating": 3.5749168395996094,
+    "num_ratings": 562624,
+    "unique_users": 9335,
+    "unique_movies": 31379
+  }
+]
