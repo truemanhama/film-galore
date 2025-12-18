@@ -1,0 +1,802 @@
+[
+  {
+    "movieId": 318,
+    "title": "Shawshank Redemption, The (1994)",
+    "genres": "Crime|Drama",
+    "weighted_score": 4.414916038513184,
+    "avg_rating": 4.416791915893555,
+    "num_ratings": 122296
+  },
+  {
+    "movieId": 159817,
+    "title": "Planet Earth (2006)",
+    "genres": "Documentary",
+    "weighted_score": 4.375439167022705,
+    "avg_rating": 4.448092937469482,
+    "num_ratings": 3015
+  },
+  {
+    "movieId": 170705,
+    "title": "Band of Brothers (2001)",
+    "genres": "Action|Drama|War",
+    "weighted_score": 4.349157333374023,
+    "avg_rating": 4.423985958099365,
+    "num_ratings": 2835
+  },
+  {
+    "movieId": 171011,
+    "title": "Planet Earth II (2016)",
+    "genres": "Documentary",
+    "weighted_score": 4.347955226898193,
+    "avg_rating": 4.451739311218262,
+    "num_ratings": 2041
+  },
+  {
+    "movieId": 858,
+    "title": "Godfather, The (1972)",
+    "genres": "Crime|Drama",
+    "weighted_score": 4.323862552642822,
+    "avg_rating": 4.326602458953857,
+    "num_ratings": 75004
+  },
+  {
+    "movieId": 202439,
+    "title": "Parasite (2019)",
+    "genres": "Comedy|Drama",
+    "weighted_score": 4.313591003417969,
+    "avg_rating": 4.329946041107178,
+    "num_ratings": 12399
+  },
+  {
+    "movieId": 1221,
+    "title": "Godfather: Part II, The (1974)",
+    "genres": "Crime|Drama",
+    "weighted_score": 4.2654876708984375,
+    "avg_rating": 4.269509792327881,
+    "num_ratings": 47271
+  },
+  {
+    "movieId": 50,
+    "title": "Usual Suspects, The (1995)",
+    "genres": "Crime|Mystery|Thriller",
+    "weighted_score": 4.265257835388184,
+    "avg_rating": 4.267865180969238,
+    "num_ratings": 72893
+  },
+  {
+    "movieId": 1203,
+    "title": "12 Angry Men (1957)",
+    "genres": "Drama",
+    "weighted_score": 4.258869647979736,
+    "avg_rating": 4.267158031463623,
+    "num_ratings": 22730
+  },
+  {
+    "movieId": 527,
+    "title": "Schindler's List (1993)",
+    "genres": "Drama|War",
+    "weighted_score": 4.240158557891846,
+    "avg_rating": 4.242336750030518,
+    "num_ratings": 84232
+  },
+  {
+    "movieId": 2019,
+    "title": "Seven Samurai (Shichinin no samurai) (1954)",
+    "genres": "Action|Adventure|Drama",
+    "weighted_score": 4.2401018142700195,
+    "avg_rating": 4.250817775726318,
+    "num_ratings": 17120
+  },
+  {
+    "movieId": 2959,
+    "title": "Fight Club (1999)",
+    "genres": "Action|Crime|Drama|Thriller",
+    "weighted_score": 4.233910083770752,
+    "avg_rating": 4.236019134521484,
+    "num_ratings": 86207
+  },
+  {
+    "movieId": 5618,
+    "title": "Spirited Away (Sen to Chihiro no kamikakushi) (2001)",
+    "genres": "Adventure|Animation|Fantasy",
+    "weighted_score": 4.220991134643555,
+    "avg_rating": 4.226035118103027,
+    "num_ratings": 35375
+  },
+  {
+    "movieId": 904,
+    "title": "Rear Window (1954)",
+    "genres": "Mystery|Thriller",
+    "weighted_score": 4.2162299156188965,
+    "avg_rating": 4.22302770614624,
+    "num_ratings": 26064
+  },
+  {
+    "movieId": 1193,
+    "title": "One Flew Over the Cuckoo's Nest (1975)",
+    "genres": "Drama",
+    "weighted_score": 4.209245681762695,
+    "avg_rating": 4.212800979614258,
+    "num_ratings": 49316
+  },
+  {
+    "movieId": 750,
+    "title": "Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb (1964)",
+    "genres": "Comedy|War",
+    "weighted_score": 4.1949920654296875,
+    "avg_rating": 4.199991226196289,
+    "num_ratings": 34324
+  },
+  {
+    "movieId": 912,
+    "title": "Casablanca (1942)",
+    "genres": "Drama|Romance",
+    "weighted_score": 4.190990924835205,
+    "avg_rating": 4.195889472961426,
+    "num_ratings": 34813
+  },
+  {
+    "movieId": 296,
+    "title": "Pulp Fiction (1994)",
+    "genres": "Comedy|Crime|Drama|Thriller",
+    "weighted_score": 4.190211296081543,
+    "avg_rating": 4.19177770614624,
+    "num_ratings": 108756
+  },
+  {
+    "movieId": 1213,
+    "title": "Goodfellas (1990)",
+    "genres": "Crime|Drama",
+    "weighted_score": 4.1881103515625,
+    "avg_rating": 4.191917896270752,
+    "num_ratings": 44592
+  },
+  {
+    "movieId": 44555,
+    "title": "Lives of Others, The (Das leben der Anderen) (2006)",
+    "genres": "Drama|Romance|Thriller",
+    "weighted_score": 4.1879658699035645,
+    "avg_rating": 4.201409816741943,
+    "num_ratings": 12626
+  },
+  {
+    "movieId": 58559,
+    "title": "Dark Knight, The (2008)",
+    "genres": "Action|Crime|Drama|IMAX",
+    "weighted_score": 4.184953689575195,
+    "avg_rating": 4.187539100646973,
+    "num_ratings": 65349
+  },
+  {
+    "movieId": 179135,
+    "title": "Blue Planet II (2017)",
+    "genres": "Documentary",
+    "weighted_score": 4.180515766143799,
+    "avg_rating": 4.312943935394287,
+    "num_ratings": 1267
+  },
+  {
+    "movieId": 908,
+    "title": "North by Northwest (1959)",
+    "genres": "Action|Adventure|Mystery|Romance|Thriller",
+    "weighted_score": 4.179679870605469,
+    "avg_rating": 4.187337398529053,
+    "num_ratings": 21883
+  },
+  {
+    "movieId": 6016,
+    "title": "City of God (Cidade de Deus) (2002)",
+    "genres": "Action|Adventure|Crime|Drama|Thriller",
+    "weighted_score": 4.177460670471191,
+    "avg_rating": 4.183597564697266,
+    "num_ratings": 27209
+  },
+  {
+    "movieId": 166024,
+    "title": "Whiplash (2013)",
+    "genres": "(no genres listed)",
+    "weighted_score": 4.17732572555542,
+    "avg_rating": 4.231990814208984,
+    "num_ratings": 3054
+  },
+  {
+    "movieId": 195159,
+    "title": "Spider-Man: Into the Spider-Verse (2018)",
+    "genres": "Action|Adventure|Animation|Sci-Fi",
+    "weighted_score": 4.176730155944824,
+    "avg_rating": 4.192053318023682,
+    "num_ratings": 10885
+  },
+  {
+    "movieId": 79132,
+    "title": "Inception (2010)",
+    "genres": "Action|Crime|Drama|Mystery|Sci-Fi|Thriller|IMAX",
+    "weighted_score": 4.173635482788086,
+    "avg_rating": 4.176186561584473,
+    "num_ratings": 65056
+  },
+  {
+    "movieId": 922,
+    "title": "Sunset Blvd. (a.k.a. Sunset Boulevard) (1950)",
+    "genres": "Drama|Film-Noir|Romance",
+    "weighted_score": 4.1727190017700195,
+    "avg_rating": 4.189934730529785,
+    "num_ratings": 9627
+  },
+  {
+    "movieId": 1212,
+    "title": "Third Man, The (1949)",
+    "genres": "Film-Noir|Mystery|Thriller",
+    "weighted_score": 4.163961410522461,
+    "avg_rating": 4.181578159332275,
+    "num_ratings": 9277
+  },
+  {
+    "movieId": 3435,
+    "title": "Double Indemnity (1944)",
+    "genres": "Crime|Drama|Film-Noir",
+    "weighted_score": 4.162037372589111,
+    "avg_rating": 4.186036109924316,
+    "num_ratings": 6789
+  },
+  {
+    "movieId": 198185,
+    "title": "Twin Peaks (1989)",
+    "genres": "Drama|Mystery",
+    "weighted_score": 4.159275531768799,
+    "avg_rating": 4.3025617599487305,
+    "num_ratings": 1132
+  },
+  {
+    "movieId": 2571,
+    "title": "Matrix, The (1999)",
+    "genres": "Action|Sci-Fi|Thriller",
+    "weighted_score": 4.159115791320801,
+    "avg_rating": 4.160630702972412,
+    "num_ratings": 107056
+  },
+  {
+    "movieId": 2324,
+    "title": "Life Is Beautiful (La Vita \u00e8 bella) (1997)",
+    "genres": "Comedy|Drama|Romance|War",
+    "weighted_score": 4.158547401428223,
+    "avg_rating": 4.1635422706604,
+    "num_ratings": 32435
+  },
+  {
+    "movieId": 3000,
+    "title": "Princess Mononoke (Mononoke-hime) (1997)",
+    "genres": "Action|Adventure|Animation|Drama|Fantasy",
+    "weighted_score": 4.157157897949219,
+    "avg_rating": 4.166026592254639,
+    "num_ratings": 18226
+  },
+  {
+    "movieId": 5971,
+    "title": "My Neighbor Totoro (Tonari no Totoro) (1988)",
+    "genres": "Animation|Children|Drama|Fantasy",
+    "weighted_score": 4.152048587799072,
+    "avg_rating": 4.163490295410156,
+    "num_ratings": 14010
+  },
+  {
+    "movieId": 1178,
+    "title": "Paths of Glory (1957)",
+    "genres": "Drama|War",
+    "weighted_score": 4.15172815322876,
+    "avg_rating": 4.180317401885986,
+    "num_ratings": 5604
+  },
+  {
+    "movieId": 112552,
+    "title": "Whiplash (2014)",
+    "genres": "Drama",
+    "weighted_score": 4.149419784545898,
+    "avg_rating": 4.157039165496826,
+    "num_ratings": 20947
+  },
+  {
+    "movieId": 593,
+    "title": "Silence of the Lambs, The (1991)",
+    "genres": "Crime|Horror|Thriller",
+    "weighted_score": 4.148720741271973,
+    "avg_rating": 4.150286674499512,
+    "num_ratings": 101802
+  },
+  {
+    "movieId": 163809,
+    "title": "Over the Garden Wall (2013)",
+    "genres": "Adventure|Animation|Drama",
+    "weighted_score": 4.1460065841674805,
+    "avg_rating": 4.256992816925049,
+    "num_ratings": 1430
+  },
+  {
+    "movieId": 109487,
+    "title": "Interstellar (2014)",
+    "genres": "Sci-Fi|IMAX",
+    "weighted_score": 4.1430816650390625,
+    "avg_rating": 4.146971702575684,
+    "num_ratings": 40603
+  },
+  {
+    "movieId": 4226,
+    "title": "Memento (2000)",
+    "genres": "Mystery|Thriller",
+    "weighted_score": 4.140885829925537,
+    "avg_rating": 4.143713474273682,
+    "num_ratings": 55649
+  },
+  {
+    "movieId": 3030,
+    "title": "Yojimbo (1961)",
+    "genres": "Action|Adventure",
+    "weighted_score": 4.137029647827148,
+    "avg_rating": 4.167050838470459,
+    "num_ratings": 5208
+  },
+  {
+    "movieId": 926,
+    "title": "All About Eve (1950)",
+    "genres": "Drama",
+    "weighted_score": 4.136148452758789,
+    "avg_rating": 4.161099433898926,
+    "num_ratings": 6257
+  },
+  {
+    "movieId": 1252,
+    "title": "Chinatown (1974)",
+    "genres": "Crime|Film-Noir|Mystery|Thriller",
+    "weighted_score": 4.136009216308594,
+    "avg_rating": 4.14309024810791,
+    "num_ratings": 22042
+  },
+  {
+    "movieId": 1136,
+    "title": "Monty Python and the Holy Grail (1975)",
+    "genres": "Adventure|Comedy|Fantasy",
+    "weighted_score": 4.133848667144775,
+    "avg_rating": 4.137098789215088,
+    "num_ratings": 47845
+  },
+  {
+    "movieId": 2329,
+    "title": "American History X (1998)",
+    "genres": "Crime|Drama",
+    "weighted_score": 4.131218433380127,
+    "avg_rating": 4.1349897384643555,
+    "num_ratings": 41055
+  },
+  {
+    "movieId": 48516,
+    "title": "Departed, The (2006)",
+    "genres": "Crime|Drama|Thriller",
+    "weighted_score": 4.130543231964111,
+    "avg_rating": 4.134782314300537,
+    "num_ratings": 36481
+  },
+  {
+    "movieId": 1234,
+    "title": "Sting, The (1973)",
+    "genres": "Comedy|Crime",
+    "weighted_score": 4.129073619842529,
+    "avg_rating": 4.136978626251221,
+    "num_ratings": 19514
+  },
+  {
+    "movieId": 1207,
+    "title": "To Kill a Mockingbird (1962)",
+    "genres": "Drama",
+    "weighted_score": 4.128593921661377,
+    "avg_rating": 4.136409759521484,
+    "num_ratings": 19720
+  },
+  {
+    "movieId": 163134,
+    "title": "Your Name. (2016)",
+    "genres": "Animation|Drama|Fantasy|Romance",
+    "weighted_score": 4.128406047821045,
+    "avg_rating": 4.167512893676758,
+    "num_ratings": 3940
+  },
+  {
+    "movieId": 1260,
+    "title": "M (1931)",
+    "genres": "Crime|Film-Noir|Thriller",
+    "weighted_score": 4.126866340637207,
+    "avg_rating": 4.152763843536377,
+    "num_ratings": 5934
+  },
+  {
+    "movieId": 1201,
+    "title": "Good, the Bad and the Ugly, The (Buono, il brutto, il cattivo, Il) (1966)",
+    "genres": "Action|Adventure|Western",
+    "weighted_score": 4.12547492980957,
+    "avg_rating": 4.13191032409668,
+    "num_ratings": 23823
+  },
+  {
+    "movieId": 930,
+    "title": "Notorious (1946)",
+    "genres": "Film-Noir|Romance|Thriller",
+    "weighted_score": 4.124699592590332,
+    "avg_rating": 4.149450302124023,
+    "num_ratings": 6186
+  },
+  {
+    "movieId": 92259,
+    "title": "Intouchables (2011)",
+    "genres": "Comedy|Drama",
+    "weighted_score": 4.123803615570068,
+    "avg_rating": 4.1314239501953125,
+    "num_ratings": 20061
+  },
+  {
+    "movieId": 1284,
+    "title": "Big Sleep, The (1946)",
+    "genres": "Crime|Film-Noir|Mystery",
+    "weighted_score": 4.121721267700195,
+    "avg_rating": 4.143364429473877,
+    "num_ratings": 7038
+  },
+  {
+    "movieId": 48780,
+    "title": "Prestige, The (2006)",
+    "genres": "Drama|Mystery|Sci-Fi|Thriller",
+    "weighted_score": 4.1181960105896,
+    "avg_rating": 4.122642993927002,
+    "num_ratings": 34046
+  },
+  {
+    "movieId": 1217,
+    "title": "Ran (1985)",
+    "genres": "Drama|War",
+    "weighted_score": 4.116873741149902,
+    "avg_rating": 4.140012264251709,
+    "num_ratings": 6528
+  },
+  {
+    "movieId": 1196,
+    "title": "Star Wars: Episode V - The Empire Strikes Back (1980)",
+    "genres": "Action|Adventure|Sci-Fi",
+    "weighted_score": 4.116148948669434,
+    "avg_rating": 4.118030071258545,
+    "num_ratings": 80200
+  },
+  {
+    "movieId": 608,
+    "title": "Fargo (1996)",
+    "genres": "Comedy|Crime|Drama|Thriller",
+    "weighted_score": 4.1129045486450195,
+    "avg_rating": 4.115324974060059,
+    "num_ratings": 61977
+  },
+  {
+    "movieId": 1208,
+    "title": "Apocalypse Now (1979)",
+    "genres": "Action|Drama|War",
+    "weighted_score": 4.112685680389404,
+    "avg_rating": 4.117093086242676,
+    "num_ratings": 34020
+  },
+  {
+    "movieId": 142115,
+    "title": "The Blue Planet (2001)",
+    "genres": "Documentary",
+    "weighted_score": 4.111458778381348,
+    "avg_rating": 4.25,
+    "num_ratings": 1080
+  },
+  {
+    "movieId": 1172,
+    "title": "Cinema Paradiso (Nuovo cinema Paradiso) (1989)",
+    "genres": "Drama",
+    "weighted_score": 4.11076021194458,
+    "avg_rating": 4.123029708862305,
+    "num_ratings": 12180
+  },
+  {
+    "movieId": 541,
+    "title": "Blade Runner (1982)",
+    "genres": "Action|Sci-Fi|Thriller",
+    "weighted_score": 4.110579967498779,
+    "avg_rating": 4.113712310791016,
+    "num_ratings": 47695
+  },
+  {
+    "movieId": 913,
+    "title": "Maltese Falcon, The (1941)",
+    "genres": "Film-Noir|Mystery",
+    "weighted_score": 4.110343933105469,
+    "avg_rating": 4.119897842407227,
+    "num_ratings": 15630
+  },
+  {
+    "movieId": 31658,
+    "title": "Howl's Moving Castle (Hauru no ugoku shiro) (2004)",
+    "genres": "Adventure|Animation|Fantasy|Romance",
+    "weighted_score": 4.109757900238037,
+    "avg_rating": 4.118814945220947,
+    "num_ratings": 16471
+  },
+  {
+    "movieId": 903,
+    "title": "Vertigo (1958)",
+    "genres": "Drama|Mystery|Romance|Thriller",
+    "weighted_score": 4.108811855316162,
+    "avg_rating": 4.115980625152588,
+    "num_ratings": 20775
+  },
+  {
+    "movieId": 7153,
+    "title": "Lord of the Rings: The Return of the King, The (2003)",
+    "genres": "Action|Adventure|Drama|Fantasy",
+    "weighted_score": 4.108211040496826,
+    "avg_rating": 4.1101813316345215,
+    "num_ratings": 75512
+  },
+  {
+    "movieId": 1197,
+    "title": "Princess Bride, The (1987)",
+    "genres": "Action|Adventure|Comedy|Fantasy|Romance",
+    "weighted_score": 4.107972145080566,
+    "avg_rating": 4.11090087890625,
+    "num_ratings": 50775
+  },
+  {
+    "movieId": 171495,
+    "title": "Cosmos",
+    "genres": "(no genres listed)",
+    "weighted_score": 4.106069087982178,
+    "avg_rating": 4.343200206756592,
+    "num_ratings": 625
+  },
+  {
+    "movieId": 1204,
+    "title": "Lawrence of Arabia (1962)",
+    "genres": "Adventure|Drama|War",
+    "weighted_score": 4.105781555175781,
+    "avg_rating": 4.114418029785156,
+    "num_ratings": 17152
+  },
+  {
+    "movieId": 1704,
+    "title": "Good Will Hunting (1997)",
+    "genres": "Drama|Romance",
+    "weighted_score": 4.103916645050049,
+    "avg_rating": 4.106602191925049,
+    "num_ratings": 54980
+  },
+  {
+    "movieId": 1148,
+    "title": "Wallace & Gromit: The Wrong Trousers (1993)",
+    "genres": "Animation|Children|Comedy|Crime",
+    "weighted_score": 4.103271007537842,
+    "avg_rating": 4.11120080947876,
+    "num_ratings": 18597
+  },
+  {
+    "movieId": 950,
+    "title": "Thin Man, The (1934)",
+    "genres": "Comedy|Crime",
+    "weighted_score": 4.102309226989746,
+    "avg_rating": 4.139336109161377,
+    "num_ratings": 3976
+  },
+  {
+    "movieId": 1248,
+    "title": "Touch of Evil (1958)",
+    "genres": "Crime|Film-Noir|Thriller",
+    "weighted_score": 4.100710391998291,
+    "avg_rating": 4.125528335571289,
+    "num_ratings": 5915
+  },
+  {
+    "movieId": 1233,
+    "title": "Boot, Das (Boat, The) (1981)",
+    "genres": "Action|Drama|War",
+    "weighted_score": 4.099606990814209,
+    "avg_rating": 4.108198642730713,
+    "num_ratings": 17052
+  },
+  {
+    "movieId": 2858,
+    "title": "American Beauty (1999)",
+    "genres": "Drama|Romance",
+    "weighted_score": 4.09955358505249,
+    "avg_rating": 4.101649284362793,
+    "num_ratings": 69902
+  },
+  {
+    "movieId": 1198,
+    "title": "Raiders of the Lost Ark (Indiana Jones and the Raiders of the Lost Ark) (1981)",
+    "genres": "Action|Adventure",
+    "weighted_score": 4.099094390869141,
+    "avg_rating": 4.101039409637451,
+    "num_ratings": 75248
+  },
+  {
+    "movieId": 4993,
+    "title": "Lord of the Rings: The Fellowship of the Ring, The (2001)",
+    "genres": "Adventure|Fantasy",
+    "weighted_score": 4.09750509262085,
+    "avg_rating": 4.099330902099609,
+    "num_ratings": 79940
+  },
+  {
+    "movieId": 1209,
+    "title": "Once Upon a Time in the West (C'era una volta il West) (1968)",
+    "genres": "Action|Drama|Western",
+    "weighted_score": 4.095290660858154,
+    "avg_rating": 4.114866733551025,
+    "num_ratings": 7426
+  },
+  {
+    "movieId": 293,
+    "title": "L\u00e9on: The Professional (a.k.a. The Professional) (L\u00e9on) (1994)",
+    "genres": "Action|Crime|Drama|Thriller",
+    "weighted_score": 4.094212055206299,
+    "avg_rating": 4.0975446701049805,
+    "num_ratings": 43539
+  },
+  {
+    "movieId": 1089,
+    "title": "Reservoir Dogs (1992)",
+    "genres": "Crime|Mystery|Thriller",
+    "weighted_score": 4.090995788574219,
+    "avg_rating": 4.094178676605225,
+    "num_ratings": 45318
+  },
+  {
+    "movieId": 260,
+    "title": "Star Wars: Episode IV - A New Hope (1977)",
+    "genres": "Action|Adventure|Sci-Fi",
+    "weighted_score": 4.090916633605957,
+    "avg_rating": 4.092400550842285,
+    "num_ratings": 97202
+  },
+  {
+    "movieId": 7099,
+    "title": "Nausica\u00e4 of the Valley of the Wind (Kaze no tani no Naushika) (1984)",
+    "genres": "Adventure|Animation|Drama|Fantasy|Sci-Fi",
+    "weighted_score": 4.09030294418335,
+    "avg_rating": 4.1092681884765625,
+    "num_ratings": 7596
+  },
+  {
+    "movieId": 1254,
+    "title": "Treasure of the Sierra Madre, The (1948)",
+    "genres": "Action|Adventure|Drama|Western",
+    "weighted_score": 4.090202331542969,
+    "avg_rating": 4.112002372741699,
+    "num_ratings": 6607
+  },
+  {
+    "movieId": 1147,
+    "title": "When We Were Kings (1996)",
+    "genres": "Documentary",
+    "weighted_score": 4.089303970336914,
+    "avg_rating": 4.1234846115112305,
+    "num_ratings": 4207
+  },
+  {
+    "movieId": 176601,
+    "title": "Black Mirror",
+    "genres": "(no genres listed)",
+    "weighted_score": 4.089024066925049,
+    "avg_rating": 4.224740505218506,
+    "num_ratings": 1059
+  },
+  {
+    "movieId": 160718,
+    "title": "Piper (2016)",
+    "genres": "Animation",
+    "weighted_score": 4.088850021362305,
+    "avg_rating": 4.160438537597656,
+    "num_ratings": 2007
+  },
+  {
+    "movieId": 1945,
+    "title": "On the Waterfront (1954)",
+    "genres": "Crime|Drama",
+    "weighted_score": 4.088706016540527,
+    "avg_rating": 4.108313083648682,
+    "num_ratings": 7326
+  },
+  {
+    "movieId": 905,
+    "title": "It Happened One Night (1934)",
+    "genres": "Comedy|Romance",
+    "weighted_score": 4.08793830871582,
+    "avg_rating": 4.115296363830566,
+    "num_ratings": 5243
+  },
+  {
+    "movieId": 745,
+    "title": "Wallace & Gromit: A Close Shave (1995)",
+    "genres": "Animation|Children|Comedy",
+    "weighted_score": 4.086410045623779,
+    "avg_rating": 4.096215724945068,
+    "num_ratings": 14587
+  },
+  {
+    "movieId": 27773,
+    "title": "Old Boy (2003)",
+    "genres": "Mystery|Thriller",
+    "weighted_score": 4.085865497589111,
+    "avg_rating": 4.093858242034912,
+    "num_ratings": 17878
+  },
+  {
+    "movieId": 47,
+    "title": "Seven (a.k.a. Se7en) (1995)",
+    "genres": "Mystery|Thriller",
+    "weighted_score": 4.085572242736816,
+    "avg_rating": 4.087747097015381,
+    "num_ratings": 65666
+  },
+  {
+    "movieId": 898,
+    "title": "Philadelphia Story, The (1940)",
+    "genres": "Comedy|Drama|Romance",
+    "weighted_score": 4.084066390991211,
+    "avg_rating": 4.1012420654296875,
+    "num_ratings": 8292
+  },
+  {
+    "movieId": 4973,
+    "title": "Amelie (Fabuleux destin d'Am\u00e9lie Poulain, Le) (2001)",
+    "genres": "Comedy|Romance",
+    "weighted_score": 4.083710670471191,
+    "avg_rating": 4.086821556091309,
+    "num_ratings": 45749
+  },
+  {
+    "movieId": 5291,
+    "title": "Rashomon (Rash\u00f4mon) (1950)",
+    "genres": "Crime|Drama|Mystery",
+    "weighted_score": 4.083298206329346,
+    "avg_rating": 4.106244087219238,
+    "num_ratings": 6198
+  },
+  {
+    "movieId": 26082,
+    "title": "Harakiri (Seppuku) (1962)",
+    "genres": "Drama",
+    "weighted_score": 4.081352710723877,
+    "avg_rating": 4.191887855529785,
+    "num_ratings": 1282
+  },
+  {
+    "movieId": 5690,
+    "title": "Grave of the Fireflies (Hotaru no haka) (1988)",
+    "genres": "Animation|Drama|War",
+    "weighted_score": 4.080827713012695,
+    "avg_rating": 4.1012091636657715,
+    "num_ratings": 6946
+  },
+  {
+    "movieId": 3089,
+    "title": "Bicycle Thieves (a.k.a. The Bicycle Thief) (a.k.a. The Bicycle Thieves) (Ladri di biciclette) (1948)",
+    "genres": "Drama",
+    "weighted_score": 4.080080986022949,
+    "avg_rating": 4.108164310455322,
+    "num_ratings": 5034
+  },
+  {
+    "movieId": 1262,
+    "title": "Great Escape, The (1963)",
+    "genres": "Action|Adventure|Drama|War",
+    "weighted_score": 4.079375743865967,
+    "avg_rating": 4.089593410491943,
+    "num_ratings": 13818
+  },
+  {
+    "movieId": 2186,
+    "title": "Strangers on a Train (1951)",
+    "genres": "Crime|Drama|Film-Noir|Thriller",
+    "weighted_score": 4.078973770141602,
+    "avg_rating": 4.099420070648193,
+    "num_ratings": 6900
+  }
+]
