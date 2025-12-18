@@ -165,23 +165,22 @@ def load_analytics():
 
 @st.cache_resource(show_spinner=False)
 def load_models():
-    """Load exported ML models (content-based + RF)."""
+    """Load exported ML models (content-based + RF) - WITHOUT feature matrix."""
     models = {
         "tfidf": None,
         "content_nn": None,
-        "feature_matrix": None,
+        "feature_matrix": None,  # Will be computed lazily
         "movies_cb": None,
         "rf": None,
         "scaler": None,
         "feature_info": None,
     }
 
-    # Content-based
+    # Content-based models (without feature matrix computation)
     tfidf_path = MODELS_DIR / "tfidf_vectorizer.pkl"
     nn_path = MODELS_DIR / "content_nn_model.pkl"
-    movies_cb_path = DATA_DIR / "movies_cb.csv"
-
     movies_cb_path = DATA_DIR / "movies_cb.parquet"
+    
     if tfidf_path.exists() and nn_path.exists() and movies_cb_path.exists():
         tfidf = joblib.load(tfidf_path)
         nn = joblib.load(nn_path)
@@ -191,11 +190,10 @@ def load_models():
         # Keep movieId as column for lookups
         if 'movieId' in movies_cb.columns:
             movies_cb.set_index('movieId', inplace=True, drop=False)
-        feature_matrix = tfidf.transform(movies_cb["features"])
+        # NOTE: feature_matrix is NOT computed here - it's lazy-loaded
 
         models["tfidf"] = tfidf
         models["content_nn"] = nn
-        models["feature_matrix"] = feature_matrix
         models["movies_cb"] = movies_cb
 
     # Random Forest rating model
@@ -213,6 +211,14 @@ def load_models():
         models["feature_info"] = feature_info
 
     return models
+
+
+@st.cache_resource(show_spinner=False)
+def get_feature_matrix(tfidf, movies_cb):
+    """Lazy-load TF-IDF feature matrix - only called when needed."""
+    if tfidf is None or movies_cb is None:
+        return None
+    return tfidf.transform(movies_cb["features"])
 
 
 # -----------------------------------------------------------------------------
@@ -256,13 +262,18 @@ def popularity_recommendations(data, user_id, top_n=20, min_ratings=10):
 @st.cache_data(show_spinner=False)
 def content_based_for_user(data, _models, user_id, top_n=20):
     """Aggregate content-based recommendations from user's highly-rated movies (optimized)."""
-    if _models["content_nn"] is None or _models["feature_matrix"] is None:
+    if _models is None or _models["content_nn"] is None or _models["movies_cb"] is None:
         return pd.DataFrame()
 
     ratings = data["ratings"]
     movies_cb = _models["movies_cb"]
     nn = _models["content_nn"]
-    feature_matrix = _models["feature_matrix"]
+    tfidf = _models["tfidf"]
+    
+    # Lazy-load feature matrix
+    feature_matrix = get_feature_matrix(tfidf, movies_cb)
+    if feature_matrix is None:
+        return pd.DataFrame()
 
     user_ratings = ratings[ratings["userId"] == user_id]
     # Consider movies rated >= 4.0 and that exist in the CB subset
@@ -294,7 +305,7 @@ def content_based_for_user(data, _models, user_id, top_n=20):
 
         distances, indices = nn.kneighbors(
             feature_matrix[idx],
-            n_neighbors=min(50, len(movies_cb)),
+            n_neighbors=min(20, len(movies_cb)),
         )
         for i, dist in zip(indices[0][1:], distances[0][1:]):  # skip self
             mid = int(movies_cb_reset.iloc[i]["movieId"])
@@ -321,12 +332,17 @@ def content_based_for_user(data, _models, user_id, top_n=20):
 @st.cache_data(show_spinner=False)
 def content_based_similar_movie(_models, movie_id, top_n=10):
     """Find similar movies using content-based model (optimized)."""
-    if _models["content_nn"] is None or _models["feature_matrix"] is None:
+    if _models is None or _models["content_nn"] is None or _models["movies_cb"] is None:
         return pd.DataFrame()
 
     movies_cb = _models["movies_cb"]
     nn = _models["content_nn"]
-    feature_matrix = _models["feature_matrix"]
+    tfidf = _models["tfidf"]
+    
+    # Lazy-load feature matrix
+    feature_matrix = get_feature_matrix(tfidf, movies_cb)
+    if feature_matrix is None:
+        return pd.DataFrame()
 
     # Use index-based lookup if available, otherwise use column
     if movies_cb.index.name == 'movieId' and movie_id in movies_cb.index:
@@ -362,6 +378,9 @@ def content_based_similar_movie(_models, movie_id, top_n=10):
 # -----------------------------------------------------------------------------
 # Layout
 # -----------------------------------------------------------------------------
+# Startup debug checkpoint
+st.write("✅ App starting...")
+
 st.title("🎬 Movie Recommendation System")
 st.markdown("### Powered by Exported ML Models & Analytics")
 
@@ -374,6 +393,7 @@ page = st.sidebar.selectbox(
 # Load data with error handling - wrapped in try-except to prevent crashes
 try:
     data = load_core_data()
+    st.write("✅ Core data loaded")
 except Exception as e:
     st.error(f"Failed to load core data: {str(e)}")
     st.error("Please check that all required data files are present in the `streamlit/data/` directory.")
@@ -384,15 +404,20 @@ except Exception as e:
 
 try:
     analytics = load_analytics()
+    st.write("✅ Analytics loaded")
 except Exception as e:
     st.warning(f"Some analytics data could not be loaded: {str(e)}")
     analytics = {}
 
-try:
-    models = load_models()
-except Exception as e:
-    st.warning(f"Some models could not be loaded: {str(e)}")
-    models = {}
+# Lazy-load models only when needed (Fix 3)
+models = None
+if page in ["Get Recommendations", "Find Similar Movies"]:
+    try:
+        models = load_models()
+        st.write("✅ Models loaded")
+    except Exception as e:
+        st.warning(f"Some models could not be loaded: {str(e)}")
+        models = {}
 
 
 # -----------------------------------------------------------------------------
@@ -515,17 +540,20 @@ elif page == "Get Recommendations":
 
             if "Content-Based (Similar to Your Likes)" in model_choices:
                 st.markdown("### 🎯 Content-Based (Similar To Your Highly-Rated Movies)")
-                cb_recs = content_based_for_user(data, models, selected_user, top_n)
-                if cb_recs.empty:
-                    st.info(
-                        "Content-based model artifacts are missing, or this user has no "
-                        "highly-rated movies in the content-based subset."
-                    )
+                if models is None:
+                    st.info("Models are not loaded. Please wait for models to load.")
                 else:
-                    st.dataframe(
-                        cb_recs[["title", "genres", "score"]],
-                        use_container_width=True,
-                    )
+                    cb_recs = content_based_for_user(data, models, selected_user, top_n)
+                    if cb_recs.empty:
+                        st.info(
+                            "Content-based model artifacts are missing, or this user has no "
+                            "highly-rated movies in the content-based subset."
+                        )
+                    else:
+                        st.dataframe(
+                            cb_recs[["title", "genres", "score"]],
+                            use_container_width=True,
+                        )
 
 
 # -----------------------------------------------------------------------------
@@ -565,7 +593,10 @@ elif page == "Find Similar Movies":
                     movie_id = int(row["movieId"])
 
                     # Prefer content-based recommender if available; fallback to simple genre Jaccard
-                    similar_df = content_based_similar_movie(models, movie_id, top_n=10)
+                    if models is None:
+                        similar_df = pd.DataFrame()  # Will trigger fallback
+                    else:
+                        similar_df = content_based_similar_movie(models, movie_id, top_n=10)
 
                     if similar_df.empty:
                         # Fallback: simple genre-based similarity using exported movies
