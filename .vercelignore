@@ -1,0 +1,34 @@
+# Exclude ALL large data and model files from Vercel deployment
+# These must be hosted externally (S3, etc.) or the app won't work
+streamlit/data/**/*.parquet
+streamlit/data/**/*.csv
+streamlit/models/**/*.pkl
+streamlit/models/**/*.csv
+
+# Exclude entire directories with large files
+streamlit/data/
+streamlit/models/
+
+# Keep only JSON config files if needed (but they should be small)
+# !streamlit/data/summary_stats.json
+# !streamlit/data/top_movies_homepage.json
+# !streamlit/data/analytics/*.json
+# !streamlit/models/feature_info.json
+
+# Development files
+*.md
+.git/
+.vscode/
+.idea/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/
+.env
+.env.local
+venv/
+env/
+.venv
+

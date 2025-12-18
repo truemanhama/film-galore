@@ -1,6 +1,7 @@
 """
 Utility functions for data loading and recommendations.
 Extracted from Streamlit app for use in Flask.
+Supports both local files and external storage for Vercel deployment.
 """
 
 from pathlib import Path
@@ -8,10 +9,58 @@ import json
 import pandas as pd
 import joblib
 from functools import lru_cache
+import os
+import urllib.request
+import tempfile
 
+# Configuration
+IS_VERCEL = os.environ.get('VERCEL') == '1'
+USE_EXTERNAL_STORAGE = os.environ.get('USE_EXTERNAL_STORAGE', 'false').lower() == 'true'
+EXTERNAL_STORAGE_URL = os.environ.get('EXTERNAL_STORAGE_URL', '')
+
+# Local paths
 DATA_DIR = Path("streamlit") / "data"
 ANALYTICS_DIR = DATA_DIR / "analytics"
 MODELS_DIR = Path("streamlit") / "models"
+
+# Cache for downloaded files
+_downloaded_files = {}
+
+
+def download_file(url, local_path):
+    """Download file from external storage if not already cached."""
+    if local_path.exists():
+        return local_path
+    
+    if url in _downloaded_files:
+        return _downloaded_files[url]
+    
+    try:
+        # Create temp directory if needed
+        local_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Download file
+        urllib.request.urlretrieve(url, local_path)
+        _downloaded_files[url] = local_path
+        return local_path
+    except Exception as e:
+        print(f"Error downloading {url}: {e}")
+        raise
+
+
+def get_file_path(relative_path, file_type='data'):
+    """Get file path, downloading from external storage if needed."""
+    if USE_EXTERNAL_STORAGE and EXTERNAL_STORAGE_URL:
+        url = f"{EXTERNAL_STORAGE_URL}/{file_type}/{relative_path}"
+        local_path = Path(tempfile.gettempdir()) / "film_galore" / file_type / relative_path
+        return download_file(url, local_path)
+    else:
+        if file_type == 'data':
+            return DATA_DIR / relative_path
+        elif file_type == 'models':
+            return MODELS_DIR / relative_path
+        else:
+            return Path(relative_path)
 
 # Global cache for data
 _data_cache = None
@@ -23,11 +72,17 @@ _models_cache = None
 def load_core_data():
     """Load core exported datasets from parquet files (optimized for speed)."""
     try:
-        movies = pd.read_parquet(DATA_DIR / "movies_clean.parquet")
-        ratings = pd.read_parquet(DATA_DIR / "ratings_clean.parquet")
-        movie_stats = pd.read_parquet(DATA_DIR / "movie_stats.parquet")
-        weighted_pop = pd.read_parquet(DATA_DIR / "weighted_popularity.parquet")
-        movies_cb = pd.read_parquet(DATA_DIR / "movies_cb.parquet")
+        movies_path = get_file_path("movies_clean.parquet", "data")
+        ratings_path = get_file_path("ratings_clean.parquet", "data")
+        movie_stats_path = get_file_path("movie_stats.parquet", "data")
+        weighted_pop_path = get_file_path("weighted_popularity.parquet", "data")
+        movies_cb_path = get_file_path("movies_cb.parquet", "data")
+        
+        movies = pd.read_parquet(movies_path)
+        ratings = pd.read_parquet(ratings_path)
+        movie_stats = pd.read_parquet(movie_stats_path)
+        weighted_pop = pd.read_parquet(weighted_pop_path)
+        movies_cb = pd.read_parquet(movies_cb_path)
         
         # Optimize data types
         if 'movieId' in movies.columns:
@@ -71,8 +126,9 @@ def load_core_data():
 
     summary_stats = None
     try:
-        if (DATA_DIR / "summary_stats.json").exists():
-            with open(DATA_DIR / "summary_stats.json", "r") as f:
+        summary_path = get_file_path("summary_stats.json", "data")
+        if summary_path.exists():
+            with open(summary_path, "r") as f:
                 summary_stats = json.load(f)
     except Exception:
         summary_stats = None
@@ -93,14 +149,14 @@ def load_analytics():
     analytics = {}
 
     def _read_json(name):
-        path = ANALYTICS_DIR / name
+        path = get_file_path(f"analytics/{name}", "data")
         if path.exists():
             with open(path, "r") as f:
                 return json.load(f)
         return None
 
     def _read_parquet(name):
-        path = ANALYTICS_DIR / name
+        path = get_file_path(f"analytics/{name}", "data")
         if path.exists():
             df = pd.read_parquet(path)
             for col in df.columns:
@@ -141,9 +197,9 @@ def load_models():
         "feature_info": None,
     }
 
-    tfidf_path = MODELS_DIR / "tfidf_vectorizer.pkl"
-    nn_path = MODELS_DIR / "content_nn_model.pkl"
-    movies_cb_path = DATA_DIR / "movies_cb.parquet"
+    tfidf_path = get_file_path("tfidf_vectorizer.pkl", "models")
+    nn_path = get_file_path("content_nn_model.pkl", "models")
+    movies_cb_path = get_file_path("movies_cb.parquet", "data")
     
     if tfidf_path.exists() and nn_path.exists() and movies_cb_path.exists():
         tfidf = joblib.load(tfidf_path)
@@ -158,9 +214,9 @@ def load_models():
         models["content_nn"] = nn
         models["movies_cb"] = movies_cb
 
-    rf_path = MODELS_DIR / "random_forest_model.pkl"
-    scaler_path = MODELS_DIR / "scaler.pkl"
-    feature_info_path = MODELS_DIR / "feature_info.json"
+    rf_path = get_file_path("random_forest_model.pkl", "models")
+    scaler_path = get_file_path("scaler.pkl", "models")
+    feature_info_path = get_file_path("feature_info.json", "models")
 
     if rf_path.exists() and scaler_path.exists() and feature_info_path.exists():
         models["rf"] = joblib.load(rf_path)
