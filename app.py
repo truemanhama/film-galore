@@ -369,15 +369,7 @@ try:
     data = load_core_data()
 except Exception as e:
     st.error(f"Failed to load core data: {str(e)}")
-    st.error("Please check that all required data files are present in the `streamlit/data/` directory.")
-    data = {
-        "movies": pd.DataFrame(),
-        "ratings": pd.DataFrame(),
-        "movie_stats": pd.DataFrame(),
-        "weighted_pop": pd.DataFrame(),
-        "movies_cb": pd.DataFrame(),
-        "summary": None,
-    }
+    st.stop()
 
 try:
     analytics = load_analytics()
@@ -414,36 +406,36 @@ if page == "Home":
     # Check if data is loaded
     if movies.empty or ratings.empty:
         st.error("⚠️ Data files could not be loaded. Please check that all required data files are present in the `streamlit/data/` directory.")
-        st.info("The app cannot function without the core data files. Please ensure `movies_clean.parquet` and `ratings_clean.parquet` are present.")
-    else:
-        col1, col2, col3, col4 = st.columns(4)
-        with col1:
-            st.metric("Total Movies", f"{len(movies):,}")
-        with col2:
-            st.metric("Total Ratings", f"{len(ratings):,}")
-        with col3:
-            unique_users = ratings['userId'].nunique() if not ratings.empty and 'userId' in ratings.columns else 0
-            st.metric("Unique Users", f"{unique_users:,}")
-        with col4:
-            avg_rating = ratings['rating'].mean() if not ratings.empty and 'rating' in ratings.columns else 0.0
-            st.metric("Avg Rating", f"{avg_rating:.2f}")
+        st.stop()
+    
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.metric("Total Movies", f"{len(movies):,}")
+    with col2:
+        st.metric("Total Ratings", f"{len(ratings):,}")
+    with col3:
+        unique_users = ratings['userId'].nunique() if not ratings.empty and 'userId' in ratings.columns else 0
+        st.metric("Unique Users", f"{unique_users:,}")
+    with col4:
+        avg_rating = ratings['rating'].mean() if not ratings.empty and 'rating' in ratings.columns else 0.0
+        st.metric("Avg Rating", f"{avg_rating:.2f}")
 
-        st.subheader("Trending Now (Weighted Popularity)")
-        top_trending = data["weighted_pop"].head(20)
-        if top_trending.empty:
-            st.info("Weighted popularity file is empty or missing.")
-        else:
-            for i, row in top_trending.iterrows():
-                with st.container():
-                    c1, c2 = st.columns([3, 1])
-                    with c1:
-                        st.write(f"**{row['title']}**")
-                        st.caption(f"Genres: {row['genres']}")
-                    with c2:
-                        rating = row.get("avg_rating", None)
-                        if pd.notna(rating):
-                            st.metric("Score", f"{rating:.2f}")
-                    st.divider()
+    st.subheader("Trending Now (Weighted Popularity)")
+    top_trending = data["weighted_pop"].head(20)
+    if top_trending.empty:
+        st.info("Weighted popularity file is empty or missing.")
+    else:
+        for i, row in top_trending.iterrows():
+            with st.container():
+                c1, c2 = st.columns([3, 1])
+                with c1:
+                    st.write(f"**{row['title']}**")
+                    st.caption(f"Genres: {row['genres']}")
+                with c2:
+                    rating = row.get("avg_rating", None)
+                    if pd.notna(rating):
+                        st.metric("Score", f"{rating:.2f}")
+                st.divider()
 
 
 # -----------------------------------------------------------------------------
@@ -458,71 +450,21 @@ elif page == "Get Recommendations":
     # Check if data is loaded
     if ratings.empty or movies.empty:
         st.error("⚠️ Data files could not be loaded. Please check that all required data files are present.")
-        st.info("Please ensure `movies_clean.parquet` and `ratings_clean.parquet` are present in the `streamlit/data/` directory.")
-    else:
-        # User selection (limited for performance, but sorted)
-        # Cache unique users list to avoid recomputation
-        if 'unique_users' not in st.session_state or ratings.empty:
-            if not ratings.empty and 'userId' in ratings.columns:
-                st.session_state.unique_users = sorted(ratings["userId"].unique())
-            else:
-                st.session_state.unique_users = []
-        
-        if not st.session_state.unique_users:
-            st.error("No user data available.")
-            st.info("Please ensure the ratings data file contains user information.")
+        st.stop()
+
+    # User selection (limited for performance, but sorted)
+    # Cache unique users list to avoid recomputation
+    if 'unique_users' not in st.session_state or ratings.empty:
+        if not ratings.empty and 'userId' in ratings.columns:
+            st.session_state.unique_users = sorted(ratings["userId"].unique())
         else:
-            selected_user = st.selectbox("Select a User ID", st.session_state.unique_users)
-
-            # Show movies this user has rated
-            st.subheader("Movies You've Rated")
-            user_rated = get_user_rated_movies(data, selected_user)
-            if user_rated.empty:
-                st.info("No ratings found for this user in the exported sample.")
-            else:
-                st.dataframe(
-                    user_rated[["title", "genres", "release_year", "rating", "timestamp"]],
-                    use_container_width=True,
-                )
-
-            st.subheader("Choose Recommendation Models")
-            model_choices = st.multiselect(
-                "Select one or more models",
-                [
-                    "Top Popular (Weighted)",
-                    "Content-Based (Similar to Your Likes)",
-                ],
-                default=["Top Popular (Weighted)", "Content-Based (Similar to Your Likes)"],
-            )
-
-            top_n = st.slider("Number of recommendations per model", 5, 30, 10)
-
-            if st.button("Generate Recommendations"):
-                with st.spinner("Computing recommendations..."):
-                    if "Top Popular (Weighted)" in model_choices:
-                        st.markdown("### 📈 Top Popular (Weighted)")
-                        pop_recs = popularity_recommendations(data, selected_user, top_n)
-                        if pop_recs.empty:
-                            st.info("No popularity-based recommendations available.")
-                        else:
-                            st.dataframe(
-                                pop_recs[["title", "genres", "avg_rating", "num_ratings"]],
-                                use_container_width=True,
-                            )
-
-                    if "Content-Based (Similar to Your Likes)" in model_choices:
-                        st.markdown("### 🎯 Content-Based (Similar To Your Highly-Rated Movies)")
-                        cb_recs = content_based_for_user(data, models, selected_user, top_n)
-                        if cb_recs.empty:
-                            st.info(
-                                "Content-based model artifacts are missing, or this user has no "
-                                "highly-rated movies in the content-based subset."
-                            )
-                        else:
-                            st.dataframe(
-                                cb_recs[["title", "genres", "score"]],
-                                use_container_width=True,
-                            )
+            st.session_state.unique_users = []
+    
+    if not st.session_state.unique_users:
+        st.error("No user data available.")
+        st.stop()
+    
+    selected_user = st.selectbox("Select a User ID", st.session_state.unique_users)
 
     # Show movies this user has rated
     st.subheader("Movies You've Rated")
@@ -586,80 +528,66 @@ elif page == "Find Similar Movies":
     # Check if data is loaded
     if movies.empty:
         st.error("⚠️ Data files could not be loaded. Please check that all required data files are present.")
-        st.info("Please ensure `movies_clean.parquet` is present in the `streamlit/data/` directory.")
-    else:
-        # Cache movie titles list for faster access
-        if 'movie_titles' not in st.session_state:
-            if not movies.empty and 'title' in movies.columns:
-                try:
-                    st.session_state.movie_titles = movies["title"].tolist()
-                except Exception as e:
-                    st.error(f"Error loading movie titles: {str(e)}")
-                    st.session_state.movie_titles = []
-            else:
-                st.session_state.movie_titles = []
-        
-        if not st.session_state.movie_titles:
-            st.error("No movie data available.")
-            st.info("Please ensure the movies data file contains title information.")
+        st.stop()
+    
+    # Cache movie titles list for faster access
+    if 'movie_titles' not in st.session_state:
+        if not movies.empty and 'title' in movies.columns:
+            st.session_state.movie_titles = movies["title"].tolist()
         else:
-            selected_title = st.selectbox("Search for a movie", st.session_state.movie_titles)
+            st.session_state.movie_titles = []
+    
+    if not st.session_state.movie_titles:
+        st.error("No movie data available.")
+        st.stop()
+    
+    selected_title = st.selectbox("Search for a movie", st.session_state.movie_titles)
 
-            if st.button("Find Similar Movies"):
-                with st.spinner("Finding similar movies..."):
-                    try:
-                        # Safely get the selected movie
-                        matching_movies = movies[movies["title"] == selected_title]
-                        if matching_movies.empty:
-                            st.error(f"Movie '{selected_title}' not found in the database.")
-                        else:
-                            row = matching_movies.iloc[0]
-                            movie_id = int(row["movieId"])
+    if st.button("Find Similar Movies"):
+        with st.spinner("Finding similar movies..."):
+            row = movies[movies["title"] == selected_title].iloc[0]
+            movie_id = int(row["movieId"])
 
-                            # Prefer content-based recommender if available; fallback to simple genre Jaccard
-                            similar_df = content_based_similar_movie(models, movie_id, top_n=10)
+            # Prefer content-based recommender if available; fallback to simple genre Jaccard
+            similar_df = content_based_similar_movie(models, movie_id, top_n=10)
 
-                            if similar_df.empty:
-                                # Fallback: simple genre-based similarity using exported movies
-                                selected_genres = set(str(row["genres"]).split("|"))
-                                scores = []
-                                for _, m in movies.iterrows():
-                                    if int(m["movieId"]) == movie_id:
-                                        continue
-                                    g = set(str(m["genres"]).split("|"))
-                                    union = selected_genres.union(g)
-                                    if not union:
-                                        continue
-                                    sim = len(selected_genres.intersection(g)) / len(union)
-                                    if sim > 0:
-                                        scores.append(
-                                            {
-                                                "movieId": int(m["movieId"]),
-                                                "title": m["title"],
-                                                "genres": m["genres"],
-                                                "similarity": sim,
-                                            }
-                                        )
-                                similar_df = (
-                                    pd.DataFrame(scores).sort_values("similarity", ascending=False).head(10)
-                                )
+            if similar_df.empty:
+                # Fallback: simple genre-based similarity using exported movies
+                selected_genres = set(str(row["genres"]).split("|"))
+                scores = []
+                for _, m in movies.iterrows():
+                    if int(m["movieId"]) == movie_id:
+                        continue
+                    g = set(str(m["genres"]).split("|"))
+                    union = selected_genres.union(g)
+                    if not union:
+                        continue
+                    sim = len(selected_genres.intersection(g)) / len(union)
+                    if sim > 0:
+                        scores.append(
+                            {
+                                "movieId": int(m["movieId"]),
+                                "title": m["title"],
+                                "genres": m["genres"],
+                                "similarity": sim,
+                            }
+                        )
+                similar_df = (
+                    pd.DataFrame(scores).sort_values("similarity", ascending=False).head(10)
+                )
 
-                            if similar_df.empty:
-                                st.info("No similar movies could be found.")
-                            else:
-                                for i, r in similar_df.iterrows():
-                                    with st.container():
-                                        c1, c2 = st.columns([3, 1])
-                                        with c1:
-                                            st.write(f"**{r['title']}**")
-                                            st.caption(f"Genres: {r['genres']}")
-                                        with c2:
-                                            st.metric("Similarity", f"{float(r['similarity'])*100:.1f}%")
-                                        st.divider()
-                    except (KeyError, IndexError, ValueError) as e:
-                        st.error(f"Error processing selected movie: {str(e)}")
-                    except Exception as e:
-                        st.error(f"Unexpected error: {str(e)}")
+            if similar_df.empty:
+                st.info("No similar movies could be found.")
+            else:
+                for i, r in similar_df.iterrows():
+                    with st.container():
+                        c1, c2 = st.columns([3, 1])
+                        with c1:
+                            st.write(f"**{r['title']}**")
+                            st.caption(f"Genres: {r['genres']}")
+                        with c2:
+                            st.metric("Similarity", f"{float(r['similarity'])*100:.1f}%")
+                        st.divider()
 
 
 # -----------------------------------------------------------------------------
@@ -674,72 +602,72 @@ elif page == "Business Insights Dashboard":
     # Check if data is loaded
     if movies.empty or ratings.empty:
         st.error("⚠️ Data files could not be loaded. Please check that all required data files are present.")
-        st.info("Please ensure `movies_clean.parquet` and `ratings_clean.parquet` are present in the `streamlit/data/` directory.")
+        st.stop()
+
+    # Key metrics
+    st.subheader("Key Metrics")
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        avg_rating = ratings["rating"].mean()
+        st.metric("Average Rating", f"{avg_rating:.2f}")
+
+    with col2:
+        total_users = ratings["userId"].nunique()
+        st.metric("Total Users", f"{total_users:,}")
+
+    with col3:
+        total_movies = ratings["movieId"].nunique()
+        st.metric("Rated Movies", f"{total_movies:,}")
+
+    with col4:
+        ratings_per_user = len(ratings) / max(total_users, 1)
+        st.metric("Ratings per User", f"{ratings_per_user:.1f}")
+
+    # Genre performance (from analytics, if available)
+    st.subheader("Top Genres by Average Rating")
+    genre_perf_df = analytics.get("genre_perf_df")
+    if genre_perf_df is not None and not genre_perf_df.empty:
+        top_genres = genre_perf_df.sort_values("avg_rating", ascending=False).head(10)
+        st.bar_chart(top_genres.set_index("genre")["avg_rating"])
     else:
-        # Key metrics
-        st.subheader("Key Metrics")
-        col1, col2, col3, col4 = st.columns(4)
-
-        with col1:
-            avg_rating = ratings["rating"].mean()
-            st.metric("Average Rating", f"{avg_rating:.2f}")
-
-        with col2:
-            total_users = ratings["userId"].nunique()
-            st.metric("Total Users", f"{total_users:,}")
-
-        with col3:
-            total_movies = ratings["movieId"].nunique()
-            st.metric("Rated Movies", f"{total_movies:,}")
-
-        with col4:
-            ratings_per_user = len(ratings) / max(total_users, 1)
-            st.metric("Ratings per User", f"{ratings_per_user:.1f}")
-
-        # Genre performance (from analytics, if available)
-        st.subheader("Top Genres by Average Rating")
-        genre_perf_df = analytics.get("genre_perf_df")
-        if genre_perf_df is not None and not genre_perf_df.empty:
-            top_genres = genre_perf_df.sort_values("avg_rating", ascending=False).head(10)
-            st.bar_chart(top_genres.set_index("genre")["avg_rating"])
-        else:
-            st.info("Genre performance analytics not found; falling back to quick computation.")
-            # Quick fallback using exported data
-            genre_ratings = []
-            for _, row in movies.iterrows():
-                for g in str(row["genres"]).split("|"):
-                    if g and g != "(no genres listed)":
-                        genre_ratings.append({"genre": g, "movieId": row["movieId"]})
-            if genre_ratings:
-                genre_df = pd.DataFrame(genre_ratings)
-                gp = (
-                    genre_df.merge(ratings, on="movieId")
-                    .groupby("genre")["rating"]
-                    .agg(["mean", "count"])
-                    .reset_index()
-                )
-                gp = gp[gp["count"] >= 100].sort_values("mean", ascending=False).head(10)
-                gp.columns = ["genre", "avg_rating", "num_ratings"]
-                st.bar_chart(gp.set_index("genre")["avg_rating"])
-
-        # Hidden gems
-        st.subheader("Hidden Gems (High Rating, Low Visibility)")
-        hidden_gems_df = analytics.get("hidden_gems_df")
-        if hidden_gems_df is not None and not hidden_gems_df.empty:
-            st.dataframe(
-                hidden_gems_df[["title", "genres", "avg_rating", "num_ratings"]].head(20),
-                use_container_width=True,
+        st.info("Genre performance analytics not found; falling back to quick computation.")
+        # Quick fallback using exported data
+        genre_ratings = []
+        for _, row in movies.iterrows():
+            for g in str(row["genres"]).split("|"):
+                if g and g != "(no genres listed)":
+                    genre_ratings.append({"genre": g, "movieId": row["movieId"]})
+        if genre_ratings:
+            genre_df = pd.DataFrame(genre_ratings)
+            gp = (
+                genre_df.merge(ratings, on="movieId")
+                .groupby("genre")["rating"]
+                .agg(["mean", "count"])
+                .reset_index()
             )
-        else:
-            st.info("Hidden gems analytics not found.")
+            gp = gp[gp["count"] >= 100].sort_values("mean", ascending=False).head(10)
+            gp.columns = ["genre", "avg_rating", "num_ratings"]
+            st.bar_chart(gp.set_index("genre")["avg_rating"])
 
-        # Tag analytics
-        st.subheader("Top Tags by Usage")
-        tag_df = analytics.get("tag_analytics_df")
-        if tag_df is not None and not tag_df.empty:
-            st.bar_chart(tag_df.set_index("tag")["num_uses"])
-        else:
-            st.info("Tag analytics not found.")
+    # Hidden gems
+    st.subheader("Hidden Gems (High Rating, Low Visibility)")
+    hidden_gems_df = analytics.get("hidden_gems_df")
+    if hidden_gems_df is not None and not hidden_gems_df.empty:
+        st.dataframe(
+            hidden_gems_df[["title", "genres", "avg_rating", "num_ratings"]].head(20),
+            use_container_width=True,
+        )
+    else:
+        st.info("Hidden gems analytics not found.")
+
+    # Tag analytics
+    st.subheader("Top Tags by Usage")
+    tag_df = analytics.get("tag_analytics_df")
+    if tag_df is not None and not tag_df.empty:
+        st.bar_chart(tag_df.set_index("tag")["num_uses"])
+    else:
+        st.info("Tag analytics not found.")
 
 
 # -----------------------------------------------------------------------------
