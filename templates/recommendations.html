@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Get Personalized Recommendations</h1>
+    
+    <div class="recommendations-section">
+        <div class="user-selection">
+            <label for="userSelect">Select a User ID:</label>
+            <select id="userSelect" class="form-select">
+                <option value="">Loading users...</option>
+            </select>
+            <button id="loadUserBtn" class="btn btn-primary" disabled>Load User Data</button>
+        </div>
+
+        <div id="userRatingsSection" class="hidden">
+            <h2>Movies You've Rated</h2>
+            <div class="table-container">
+                <table class="data-table" id="userRatingsTable">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Genres</th>
+                            <th>Release Year</th>
+                            <th>Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="recommendationsSection" class="hidden">
+            <h2>Recommendations</h2>
+            <div class="model-selection">
+                <label>
+                    <input type="checkbox" id="popularModel" checked>
+                    Top Popular (Weighted)
+                </label>
+                <label>
+                    <input type="checkbox" id="contentModel" checked>
+                    Content-Based (Similar to Your Likes)
+                </label>
+                <label>
+                    Number of recommendations:
+                    <input type="number" id="topN" min="5" max="30" value="10" class="form-input">
+                </label>
+                <button id="generateBtn" class="btn btn-primary">Generate Recommendations</button>
+            </div>
+
+            <div id="recommendationsResults"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let currentUserId = null;
+
+    // Load users
+    fetch('/api/users')
+        .then(res => res.json())
+        .then(users => {
+            const select = document.getElementById('userSelect');
+            select.innerHTML = '<option value="">Select a user...</option>';
+            users.forEach(user => {
+                const option = document.createElement('option');
+                option.value = user;
+                option.textContent = `User ${user}`;
+                select.appendChild(option);
+            });
+            document.getElementById('loadUserBtn').disabled = false;
+        })
+        .catch(err => {
+            console.error('Error loading users:', err);
+            document.getElementById('userSelect').innerHTML = '<option value="">Error loading users</option>';
+        });
+
+    document.getElementById('loadUserBtn').addEventListener('click', () => {
+        const userId = document.getElementById('userSelect').value;
+        if (!userId) return;
+        currentUserId = userId;
+        loadUserRatings(userId);
+    });
+
+    function loadUserRatings(userId) {
+        fetch(`/api/user/${userId}/ratings`)
+            .then(res => res.json())
+            .then(ratings => {
+                const tbody = document.querySelector('#userRatingsTable tbody');
+                tbody.innerHTML = '';
+                
+                if (ratings.length === 0) {
+                    document.getElementById('userRatingsSection').classList.add('hidden');
+                    return;
+                }
+                
+                document.getElementById('userRatingsSection').classList.remove('hidden');
+                document.getElementById('recommendationsSection').classList.remove('hidden');
+                
+                ratings.forEach(rating => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${escapeHtml(rating.title || 'Unknown')}</td>
+                        <td>${escapeHtml(rating.genres || 'N/A')}</td>
+                        <td>${rating.release_year || 'N/A'}</td>
+                        <td>${rating.rating ? '⭐'.repeat(Math.round(rating.rating)) : 'N/A'}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(err => {
+                console.error('Error loading user ratings:', err);
+                alert('Error loading user ratings');
+            });
+    }
+
+    document.getElementById('generateBtn').addEventListener('click', () => {
+        if (!currentUserId) {
+            alert('Please select a user first');
+            return;
+        }
+        
+        const topN = parseInt(document.getElementById('topN').value) || 10;
+        const showPopular = document.getElementById('popularModel').checked;
+        const showContent = document.getElementById('contentModel').checked;
+        
+        const resultsDiv = document.getElementById('recommendationsResults');
+        resultsDiv.innerHTML = '<div class="loading">Generating recommendations...</div>';
+        
+        const promises = [];
+        
+        if (showPopular) {
+            promises.push(
+                fetch(`/api/user/${currentUserId}/recommendations?type=popular`)
+                    .then(res => res.json())
+                    .then(data => ({ type: 'popular', data: data.slice(0, topN) }))
+            );
+        }
+        
+        if (showContent) {
+            promises.push(
+                fetch(`/api/user/${currentUserId}/recommendations?type=content`)
+                    .then(res => res.json())
+                    .then(data => ({ type: 'content', data: data.slice(0, topN) }))
+            );
+        }
+        
+        Promise.all(promises).then(results => {
+            resultsDiv.innerHTML = '';
+            results.forEach(result => {
+                const section = document.createElement('div');
+                section.className = 'recommendation-section';
+                section.innerHTML = `<h3>${result.type === 'popular' ? '📈 Top Popular (Weighted)' : '🎯 Content-Based Recommendations'}</h3>`;
+                
+                if (result.data.length === 0) {
+                    section.innerHTML += '<p class="no-data">No recommendations available.</p>';
+                } else {
+                    const grid = document.createElement('div');
+                    grid.className = 'movies-grid';
+                    result.data.forEach(movie => {
+                        const card = document.createElement('div');
+                        card.className = 'movie-card';
+                        card.innerHTML = `
+                            <div class="movie-header">
+                                <h4>${escapeHtml(movie.title || 'Unknown')}</h4>
+                                ${movie.avg_rating ? `<div class="movie-rating">${movie.avg_rating.toFixed(1)} ⭐</div>` : ''}
+                            </div>
+                            <div class="movie-genres">${escapeHtml(movie.genres || 'N/A')}</div>
+                            ${movie.score ? `<div class="movie-score">Score: ${movie.score.toFixed(2)}</div>` : ''}
+                        `;
+                        grid.appendChild(card);
+                    });
+                    section.appendChild(grid);
+                }
+                resultsDiv.appendChild(section);
+            });
+        }).catch(err => {
+            console.error('Error generating recommendations:', err);
+            resultsDiv.innerHTML = '<p class="error">Error generating recommendations.</p>';
+        });
+    });
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+</script>
+{% endblock %}
+

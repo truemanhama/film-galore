@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Business Insights Dashboard</h1>
+    
+    <div class="insights-section">
+        <section class="insight-card">
+            <h2>Top Genres by Average Rating</h2>
+            <div class="loading" id="genresLoading">Loading genre data...</div>
+            <div id="genresChart" class="chart-container"></div>
+        </section>
+
+        <section class="insight-card">
+            <h2>Hidden Gems (High Rating, Low Visibility)</h2>
+            <div class="loading" id="gemsLoading">Loading hidden gems...</div>
+            <div class="table-container">
+                <table class="data-table" id="gemsTable">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Genres</th>
+                            <th>Avg Rating</th>
+                            <th>Num Ratings</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="insight-card">
+            <h2>Top Tags by Usage</h2>
+            <div class="loading" id="tagsLoading">Loading tag data...</div>
+            <div id="tagsChart" class="chart-container"></div>
+        </section>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Load genre performance
+    fetch('/api/analytics/genres')
+        .then(res => res.json())
+        .then(genres => {
+            document.getElementById('genresLoading').style.display = 'none';
+            const ctx = document.createElement('canvas');
+            document.getElementById('genresChart').appendChild(ctx);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: genres.map(g => g.genre),
+                    datasets: [{
+                        label: 'Average Rating',
+                        data: genres.map(g => g.avg_rating),
+                        backgroundColor: 'rgba(255, 107, 107, 0.6)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        })
+        .catch(err => {
+            console.error('Error loading genres:', err);
+            document.getElementById('genresLoading').textContent = 'Error loading genre data.';
+        });
+
+    // Load hidden gems
+    fetch('/api/analytics/hidden-gems')
+        .then(res => res.json())
+        .then(gems => {
+            document.getElementById('gemsLoading').style.display = 'none';
+            const tbody = document.querySelector('#gemsTable tbody');
+            tbody.innerHTML = '';
+            
+            gems.forEach(gem => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${escapeHtml(gem.title || 'Unknown')}</td>
+                    <td>${escapeHtml(gem.genres || 'N/A')}</td>
+                    <td>${gem.avg_rating ? gem.avg_rating.toFixed(2) : 'N/A'}</td>
+                    <td>${gem.num_ratings || 0}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(err => {
+            console.error('Error loading gems:', err);
+            document.getElementById('gemsLoading').textContent = 'Error loading hidden gems.';
+        });
+
+    // Load tags
+    fetch('/api/analytics/tags')
+        .then(res => res.json())
+        .then(tags => {
+            document.getElementById('tagsLoading').style.display = 'none';
+            const ctx = document.createElement('canvas');
+            document.getElementById('tagsChart').appendChild(ctx);
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: tags.slice(0, 10).map(t => t.tag),
+                    datasets: [{
+                        label: 'Number of Uses',
+                        data: tags.slice(0, 10).map(t => t.num_uses),
+                        backgroundColor: 'rgba(107, 107, 255, 0.6)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        })
+        .catch(err => {
+            console.error('Error loading tags:', err);
+            document.getElementById('tagsLoading').textContent = 'Error loading tag data.';
+        });
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+</script>
+{% endblock %}
+

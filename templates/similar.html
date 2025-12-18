@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Find Similar Movies</h1>
+    
+    <div class="similar-section">
+        <div class="movie-search">
+            <label for="movieSearch">Search for a movie:</label>
+            <input type="text" id="movieSearch" class="form-input" placeholder="Type movie name...">
+            <div id="searchResults" class="search-results"></div>
+        </div>
+
+        <div id="similarMoviesSection" class="hidden">
+            <h2>Similar Movies</h2>
+            <div class="selected-movie" id="selectedMovie"></div>
+            <div class="loading" id="similarLoading">Finding similar movies...</div>
+            <div class="movies-grid" id="similarMovies"></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let searchTimeout;
+    let selectedMovieId = null;
+
+    document.getElementById('movieSearch').addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        const query = e.target.value.trim();
+        
+        if (query.length < 2) {
+            document.getElementById('searchResults').innerHTML = '';
+            return;
+        }
+        
+        searchTimeout = setTimeout(() => {
+            fetch(`/api/movie/search?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(movies => {
+                    const resultsDiv = document.getElementById('searchResults');
+                    resultsDiv.innerHTML = '';
+                    
+                    if (movies.length === 0) {
+                        resultsDiv.innerHTML = '<div class="search-result-item">No movies found</div>';
+                        return;
+                    }
+                    
+                    movies.forEach(movie => {
+                        const item = document.createElement('div');
+                        item.className = 'search-result-item';
+                        item.textContent = `${movie.title} (${movie.genres || 'N/A'})`;
+                        item.addEventListener('click', () => {
+                            selectMovie(movie);
+                            resultsDiv.innerHTML = '';
+                            document.getElementById('movieSearch').value = movie.title;
+                        });
+                        resultsDiv.appendChild(item);
+                    });
+                })
+                .catch(err => {
+                    console.error('Error searching:', err);
+                });
+        }, 300);
+    });
+
+    function selectMovie(movie) {
+        selectedMovieId = movie.movieId;
+        document.getElementById('selectedMovie').innerHTML = `
+            <h3>${escapeHtml(movie.title)}</h3>
+            <p>Genres: ${escapeHtml(movie.genres || 'N/A')}</p>
+        `;
+        document.getElementById('similarMoviesSection').classList.remove('hidden');
+        loadSimilarMovies(movie.movieId);
+    }
+
+    function loadSimilarMovies(movieId) {
+        const loading = document.getElementById('similarLoading');
+        const container = document.getElementById('similarMovies');
+        loading.style.display = 'block';
+        container.innerHTML = '';
+        
+        fetch(`/api/movie/${movieId}/similar`)
+            .then(res => res.json())
+            .then(movies => {
+                loading.style.display = 'none';
+                
+                if (movies.length === 0) {
+                    container.innerHTML = '<p class="no-data">No similar movies found. Trying genre-based fallback...</p>';
+                    return;
+                }
+                
+                movies.forEach(movie => {
+                    const card = document.createElement('div');
+                    card.className = 'movie-card';
+                    card.innerHTML = `
+                        <div class="movie-header">
+                            <h4>${escapeHtml(movie.title || 'Unknown')}</h4>
+                            <div class="movie-similarity">${(movie.similarity * 100).toFixed(1)}% similar</div>
+                        </div>
+                        <div class="movie-genres">${escapeHtml(movie.genres || 'N/A')}</div>
+                    `;
+                    container.appendChild(card);
+                });
+            })
+            .catch(err => {
+                console.error('Error loading similar movies:', err);
+                loading.textContent = 'Error loading similar movies.';
+            });
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+</script>
+{% endblock %}
+

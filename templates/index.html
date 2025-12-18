@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <h1 class="hero-title">🎬 Movie Recommendation System</h1>
+        <p class="hero-subtitle">Powered by Exported ML Models & Analytics</p>
+    </div>
+</div>
+
+<div class="container">
+    <section class="stats-section">
+        <h2>Dataset Statistics</h2>
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-film"></i></div>
+                <div class="stat-value" id="totalMovies">-</div>
+                <div class="stat-label">Total Movies</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-star"></i></div>
+                <div class="stat-value" id="totalRatings">-</div>
+                <div class="stat-label">Total Ratings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+                <div class="stat-value" id="uniqueUsers">-</div>
+                <div class="stat-label">Unique Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                <div class="stat-value" id="avgRating">-</div>
+                <div class="stat-label">Avg Rating</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="trending-section">
+        <h2>Trending Now (Weighted Popularity)</h2>
+        <div class="loading" id="trendingLoading">Loading trending movies...</div>
+        <div class="movies-grid" id="trendingMovies"></div>
+    </section>
+
+    <section class="features-section">
+        <h2>Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-user-check"></i></div>
+                <h3>Personalized Recommendations</h3>
+                <p>Get movie recommendations based on multiple ML models tailored to your preferences.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-search"></i></div>
+                <h3>Similar Movies</h3>
+                <p>Discover movies similar to your favorites using content-based filtering.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                <h3>Business Insights</h3>
+                <p>Explore pre-computed analytics including genre performance and hidden gems.</p>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Load stats
+    fetch('/api/stats')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('totalMovies').textContent = data.total_movies.toLocaleString();
+            document.getElementById('totalRatings').textContent = data.total_ratings.toLocaleString();
+            document.getElementById('uniqueUsers').textContent = data.unique_users.toLocaleString();
+            document.getElementById('avgRating').textContent = data.avg_rating.toFixed(2);
+        })
+        .catch(err => console.error('Error loading stats:', err));
+
+    // Load trending movies
+    fetch('/api/trending')
+        .then(res => res.json())
+        .then(movies => {
+            const container = document.getElementById('trendingMovies');
+            const loading = document.getElementById('trendingLoading');
+            loading.style.display = 'none';
+            
+            if (movies.length === 0) {
+                container.innerHTML = '<p class="no-data">No trending movies available.</p>';
+                return;
+            }
+            
+            movies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                card.innerHTML = `
+                    <div class="movie-header">
+                        <h3>${escapeHtml(movie.title || 'Unknown')}</h3>
+                        ${movie.avg_rating ? `<div class="movie-rating">${movie.avg_rating.toFixed(1)} ⭐</div>` : ''}
+                    </div>
+                    <div class="movie-genres">${escapeHtml(movie.genres || 'N/A')}</div>
+                `;
+                container.appendChild(card);
+            });
+        })
+        .catch(err => {
+            console.error('Error loading trending:', err);
+            document.getElementById('trendingLoading').textContent = 'Error loading trending movies.';
+        });
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+</script>
+{% endblock %}
+

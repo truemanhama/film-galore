@@ -57,7 +57,5 @@ Thumbs.db
 *.tmp
 *.temp
 
-troubleshooting.md
-deployment_checklist.md
-deployment_checklist.md
-tasks.md
+# Vercel
+.vercel
