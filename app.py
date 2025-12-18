@@ -3,15 +3,14 @@ Streamlit Application
 Movie Analytics & Recommendation System
 
 This version is wired to the exported artifacts created by `export_artifacts.py`:
-- Cleaned data in `flask_app/data/`
-- Analytics in `flask_app/data/analytics/`
-- Models in `flask_app/models/`
+- Cleaned data in `streamlit/data/`
+- Analytics in `streamlit/data/analytics/`
+- Models in `streamlit/models/`
 """
 
 from pathlib import Path
 import json
 
-import numpy as np
 import pandas as pd
 import joblib
 import streamlit as st
