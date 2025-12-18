@@ -46,18 +46,25 @@ def load_core_data():
         movies_cb = pd.read_parquet(DATA_DIR / "movies_cb.parquet")
         
         # Optimize data types for faster operations and smaller memory footprint
-        movies['movieId'] = movies['movieId'].astype('int32')
-        ratings['userId'] = ratings['userId'].astype('int32')
-        ratings['movieId'] = ratings['movieId'].astype('int32')
+        if 'movieId' in movies.columns:
+            movies['movieId'] = movies['movieId'].astype('int32')
+        if 'userId' in ratings.columns:
+            ratings['userId'] = ratings['userId'].astype('int32')
+        if 'movieId' in ratings.columns:
+            ratings['movieId'] = ratings['movieId'].astype('int32')
         # Keep timestamp as int64 (can be large Unix timestamps)
-        if ratings['timestamp'].dtype == 'int64':
-            pass  # Already int64, keep it
-        elif pd.api.types.is_datetime64_any_dtype(ratings['timestamp']):
-            ratings['timestamp'] = (ratings['timestamp'] - pd.Timestamp('1970-01-01')) // pd.Timedelta('1s')
-            ratings['timestamp'] = ratings['timestamp'].astype('int64')
-        movie_stats['movieId'] = movie_stats['movieId'].astype('int32')
-        weighted_pop['movieId'] = weighted_pop['movieId'].astype('int32')
-        movies_cb['movieId'] = movies_cb['movieId'].astype('int32')
+        if 'timestamp' in ratings.columns:
+            if ratings['timestamp'].dtype == 'int64':
+                pass  # Already int64, keep it
+            elif pd.api.types.is_datetime64_any_dtype(ratings['timestamp']):
+                ratings['timestamp'] = (ratings['timestamp'] - pd.Timestamp('1970-01-01')) // pd.Timedelta('1s')
+                ratings['timestamp'] = ratings['timestamp'].astype('int64')
+        if 'movieId' in movie_stats.columns:
+            movie_stats['movieId'] = movie_stats['movieId'].astype('int32')
+        if 'movieId' in weighted_pop.columns:
+            weighted_pop['movieId'] = weighted_pop['movieId'].astype('int32')
+        if 'movieId' in movies_cb.columns:
+            movies_cb['movieId'] = movies_cb['movieId'].astype('int32')
         
         # Create indexes for faster lookups (keep movieId as column for merges)
         if 'movieId' in movies.columns:
@@ -369,6 +376,10 @@ try:
     data = load_core_data()
 except Exception as e:
     st.error(f"Failed to load core data: {str(e)}")
+    st.error("Please check that all required data files are present in the `streamlit/data/` directory.")
+    import traceback
+    with st.expander("Error Details"):
+        st.code(traceback.format_exc())
     st.stop()
 
 try:
@@ -545,49 +556,58 @@ elif page == "Find Similar Movies":
 
     if st.button("Find Similar Movies"):
         with st.spinner("Finding similar movies..."):
-            row = movies[movies["title"] == selected_title].iloc[0]
-            movie_id = int(row["movieId"])
+            try:
+                matching_movies = movies[movies["title"] == selected_title]
+                if matching_movies.empty:
+                    st.error(f"Movie '{selected_title}' not found in the database.")
+                else:
+                    row = matching_movies.iloc[0]
+                    movie_id = int(row["movieId"])
 
-            # Prefer content-based recommender if available; fallback to simple genre Jaccard
-            similar_df = content_based_similar_movie(models, movie_id, top_n=10)
+                    # Prefer content-based recommender if available; fallback to simple genre Jaccard
+                    similar_df = content_based_similar_movie(models, movie_id, top_n=10)
 
-            if similar_df.empty:
-                # Fallback: simple genre-based similarity using exported movies
-                selected_genres = set(str(row["genres"]).split("|"))
-                scores = []
-                for _, m in movies.iterrows():
-                    if int(m["movieId"]) == movie_id:
-                        continue
-                    g = set(str(m["genres"]).split("|"))
-                    union = selected_genres.union(g)
-                    if not union:
-                        continue
-                    sim = len(selected_genres.intersection(g)) / len(union)
-                    if sim > 0:
-                        scores.append(
-                            {
-                                "movieId": int(m["movieId"]),
-                                "title": m["title"],
-                                "genres": m["genres"],
-                                "similarity": sim,
-                            }
+                    if similar_df.empty:
+                        # Fallback: simple genre-based similarity using exported movies
+                        selected_genres = set(str(row["genres"]).split("|"))
+                        scores = []
+                        for _, m in movies.iterrows():
+                            if int(m["movieId"]) == movie_id:
+                                continue
+                            g = set(str(m["genres"]).split("|"))
+                            union = selected_genres.union(g)
+                            if not union:
+                                continue
+                            sim = len(selected_genres.intersection(g)) / len(union)
+                            if sim > 0:
+                                scores.append(
+                                    {
+                                        "movieId": int(m["movieId"]),
+                                        "title": m["title"],
+                                        "genres": m["genres"],
+                                        "similarity": sim,
+                                    }
+                                )
+                        similar_df = (
+                            pd.DataFrame(scores).sort_values("similarity", ascending=False).head(10)
                         )
-                similar_df = (
-                    pd.DataFrame(scores).sort_values("similarity", ascending=False).head(10)
-                )
 
-            if similar_df.empty:
-                st.info("No similar movies could be found.")
-            else:
-                for i, r in similar_df.iterrows():
-                    with st.container():
-                        c1, c2 = st.columns([3, 1])
-                        with c1:
-                            st.write(f"**{r['title']}**")
-                            st.caption(f"Genres: {r['genres']}")
-                        with c2:
-                            st.metric("Similarity", f"{float(r['similarity'])*100:.1f}%")
-                        st.divider()
+                    if similar_df.empty:
+                        st.info("No similar movies could be found.")
+                    else:
+                        for i, r in similar_df.iterrows():
+                            with st.container():
+                                c1, c2 = st.columns([3, 1])
+                                with c1:
+                                    st.write(f"**{r['title']}**")
+                                    st.caption(f"Genres: {r['genres']}")
+                                with c2:
+                                    st.metric("Similarity", f"{float(r['similarity'])*100:.1f}%")
+                                st.divider()
+            except (IndexError, KeyError, ValueError) as e:
+                st.error(f"Error finding movie: {str(e)}")
+            except Exception as e:
+                st.error(f"Unexpected error: {str(e)}")
 
 
 # -----------------------------------------------------------------------------
@@ -609,20 +629,33 @@ elif page == "Business Insights Dashboard":
     col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        avg_rating = ratings["rating"].mean()
-        st.metric("Average Rating", f"{avg_rating:.2f}")
+        try:
+            avg_rating = ratings["rating"].mean() if "rating" in ratings.columns else 0.0
+            st.metric("Average Rating", f"{avg_rating:.2f}")
+        except Exception as e:
+            st.metric("Average Rating", "N/A")
 
     with col2:
-        total_users = ratings["userId"].nunique()
-        st.metric("Total Users", f"{total_users:,}")
+        try:
+            total_users = ratings["userId"].nunique() if "userId" in ratings.columns else 0
+            st.metric("Total Users", f"{total_users:,}")
+        except Exception as e:
+            st.metric("Total Users", "N/A")
 
     with col3:
-        total_movies = ratings["movieId"].nunique()
-        st.metric("Rated Movies", f"{total_movies:,}")
+        try:
+            total_movies = ratings["movieId"].nunique() if "movieId" in ratings.columns else 0
+            st.metric("Rated Movies", f"{total_movies:,}")
+        except Exception as e:
+            st.metric("Rated Movies", "N/A")
 
     with col4:
-        ratings_per_user = len(ratings) / max(total_users, 1)
-        st.metric("Ratings per User", f"{ratings_per_user:.1f}")
+        try:
+            total_users = ratings["userId"].nunique() if "userId" in ratings.columns else 1
+            ratings_per_user = len(ratings) / max(total_users, 1)
+            st.metric("Ratings per User", f"{ratings_per_user:.1f}")
+        except Exception as e:
+            st.metric("Ratings per User", "N/A")
 
     # Genre performance (from analytics, if available)
     st.subheader("Top Genres by Average Rating")
@@ -633,22 +666,26 @@ elif page == "Business Insights Dashboard":
     else:
         st.info("Genre performance analytics not found; falling back to quick computation.")
         # Quick fallback using exported data
-        genre_ratings = []
-        for _, row in movies.iterrows():
-            for g in str(row["genres"]).split("|"):
-                if g and g != "(no genres listed)":
-                    genre_ratings.append({"genre": g, "movieId": row["movieId"]})
-        if genre_ratings:
-            genre_df = pd.DataFrame(genre_ratings)
-            gp = (
-                genre_df.merge(ratings, on="movieId")
-                .groupby("genre")["rating"]
-                .agg(["mean", "count"])
-                .reset_index()
-            )
-            gp = gp[gp["count"] >= 100].sort_values("mean", ascending=False).head(10)
-            gp.columns = ["genre", "avg_rating", "num_ratings"]
-            st.bar_chart(gp.set_index("genre")["avg_rating"])
+        try:
+            genre_ratings = []
+            for _, row in movies.iterrows():
+                if "genres" in row and "movieId" in row:
+                    for g in str(row["genres"]).split("|"):
+                        if g and g != "(no genres listed)":
+                            genre_ratings.append({"genre": g, "movieId": row["movieId"]})
+            if genre_ratings and "movieId" in ratings.columns and "rating" in ratings.columns:
+                genre_df = pd.DataFrame(genre_ratings)
+                gp = (
+                    genre_df.merge(ratings, on="movieId")
+                    .groupby("genre")["rating"]
+                    .agg(["mean", "count"])
+                    .reset_index()
+                )
+                gp = gp[gp["count"] >= 100].sort_values("mean", ascending=False).head(10)
+                gp.columns = ["genre", "avg_rating", "num_ratings"]
+                st.bar_chart(gp.set_index("genre")["avg_rating"])
+        except Exception as e:
+            st.warning(f"Could not compute genre statistics: {str(e)}")
 
     # Hidden gems
     st.subheader("Hidden Gems (High Rating, Low Visibility)")
